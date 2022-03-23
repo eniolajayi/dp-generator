@@ -2,9 +2,11 @@ import { Link } from "react-router-dom";
 export default function Header() {
   return (
     <header>
-      <div className="logo">DP Generator</div>
+      <Link to="/" className="logo">
+        DP Generator
+      </Link>
       <nav>
-        <Link to="/how">How it works</Link>
+        <Link to="/help">How it works</Link>
       </nav>
     </header>
   );

@@ -3,12 +3,20 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./components/App";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Help from "./routes/help";
+import Home from "./routes/home";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <Routes>
+        <Route path="/" element={<App />}>
+          <Route index element={<Home />} />
+          <Route path="/help" element={<Help />} />
+          <Route path="*" element={<h1>404 - no matching url</h1>} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
