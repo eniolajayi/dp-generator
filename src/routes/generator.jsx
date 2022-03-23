@@ -29,7 +29,6 @@ export default function DPGenerator() {
       {Boolean(imgSrc) && (
         <ReactCrop
           crop={crop}
-          circularCrop={true}
           onChange={(_, percentCrop) => {
             setCrop(percentCrop);
           }}
