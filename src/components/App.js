@@ -1,5 +1,5 @@
 import "./App.css";
-import Button from "./Button/Button";
+import Button from "./button/Button";
 import Layout from "./layout/Layout";
 
 function App() {
