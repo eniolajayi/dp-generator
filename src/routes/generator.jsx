@@ -5,8 +5,8 @@ import "react-image-crop/dist/ReactCrop.css";
 export default function DPGenerator() {
   const [imgSrc, setImgSrc] = useState("");
   const [crop, setCrop] = useState();
-  const [completedCrop, setCompletedCrop] = useState();
   const imgRef = useRef(null);
+
   const onSelectFile = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
@@ -29,12 +29,12 @@ export default function DPGenerator() {
       {Boolean(imgSrc) && (
         <ReactCrop
           crop={crop}
+          circularCrop={true}
           onChange={(_, percentCrop) => {
             setCrop(percentCrop);
           }}
-          onComplete={(_, percentCrop) => {
-            setCompletedCrop(percentCrop);
-            console.log(percentCrop);
+          onComplete={() => {
+            console.log(crop);
           }}
         >
           <img src={imgSrc} alt="Select an area" onLoad={onImageLoad} />
