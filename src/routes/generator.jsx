@@ -19,7 +19,7 @@ export default function DPGenerator() {
 
   const onImageLoad = (e) => {
     imgRef.current = e.currentTarget;
-    const { width, height } = e.currentTarget;
+    // const { width, height } = e.currentTarget;
   };
 
   return (
