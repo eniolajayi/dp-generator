@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Button from "../components/Button/Button";
 export default function Home() {
   return (
@@ -13,7 +14,9 @@ export default function Home() {
       >
         Create your own personalized dp banner with ease
       </h1>
-      <Button>Get Started</Button>
+      <Button>
+        <Link to="/generator">Get Started</Link>
+      </Button>
     </main>
   );
 }

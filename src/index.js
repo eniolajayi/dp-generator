@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Help from "./routes/help";
 import Home from "./routes/home";
+import DPGenerator from "./routes/generator";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -14,6 +15,7 @@ ReactDOM.render(
         <Route path="/" element={<App />}>
           <Route index element={<Home />} />
           <Route path="/help" element={<Help />} />
+          <Route path="/generator" element={<DPGenerator />} />
           <Route path="*" element={<h1>404 - no matching url</h1>} />
         </Route>
       </Routes>
