@@ -7,9 +7,9 @@ function App() {
   return (
     <MantineProvider
       theme={{
-        fontFamily: "Montserrat",
+        fontFamily: "Cabinet Grotesk",
         headings: {
-          fontFamily: "Montserrat",
+          fontFamily: "Cabinet Grotesk",
           sizes: {
             h1: { fontSize: 36 },
           },
