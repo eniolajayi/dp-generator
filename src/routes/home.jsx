@@ -44,7 +44,7 @@ export default function Home() {
           </Title>
           <Button
             component={Link}
-            to="/generator"
+            to="/createdp"
             styles={(theme) => ({
               root: {
                 backgroundColor: theme.colors.teal[6],

@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 
-export default function DPGenerator() {
+function DPGenerator() {
   const [imgSrc, setImgSrc] = useState("");
   const [crop, setCrop] = useState();
   const imgRef = useRef(null);
@@ -43,4 +43,8 @@ export default function DPGenerator() {
       {/* create data structure from selected part */}
     </>
   );
+}
+
+export default function CreateDP() {
+  return <></>;
 }
