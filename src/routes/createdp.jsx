@@ -16,8 +16,9 @@ import { useMediaQuery } from "@mantine/hooks";
 export default function CreateDP() {
   const imgRef = useRef(null);
   const MAX_FILE_SIZE = 60000000;
-  const [imgSrc, setImgSrc] = useState("");
   const [crop, setCrop] = useState("");
+  const [imgSrc, setImgSrc] = useState("");
+  const [completedCrop, setCompletedCrop] = useState(false);
   const [shapeType, setShapeType] = useState("box");
   const matchesTablet = useMediaQuery("(max-width:920px)");
 
@@ -70,7 +71,7 @@ export default function CreateDP() {
           <Text color={"indigo"}>Note: max file size of image is 6mb</Text>
         </section>
       ) : (
-        <section style={{ marginTop: "2rem" }}>
+        <section style={{ marginTop: "2rem", flexBasis: "60%" }}>
           <Text color={"indigo"}>Banner Image</Text>
           <RadioGroup
             value={shapeType}
@@ -86,6 +87,7 @@ export default function CreateDP() {
           </RadioGroup>
           <ReactCrop
             crop={crop}
+            disabled={completedCrop}
             circularCrop={shapeType === "round"}
             onChange={(_, percentCrop) => {
               setCrop(percentCrop);
@@ -96,16 +98,25 @@ export default function CreateDP() {
           >
             <img src={imgSrc} alt="Select an area" onLoad={onImageLoad} />
           </ReactCrop>
+          <Button
+            variant="subtle"
+            color="indigo"
+            onClick={() => setCompletedCrop(!completedCrop)}
+            sx={{ marginTop: "1rem", marginLeft: "auto", marginRight: "auto" }}
+          >
+            {completedCrop ? "Re-Select" : "Done"}
+          </Button>
         </section>
       )}
       <form
         style={{
           width: matchesTablet ? "100%" : "auto",
+          marginRight: matchesTablet ? "0" : "1rem",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           marginTop: "2rem",
-          flexBasis: "50%",
+          flexBasis: "40%",
         }}
       >
         <TextInput
