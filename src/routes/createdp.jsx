@@ -39,8 +39,6 @@ function DPGenerator() {
           <img src={imgSrc} alt="Select an area" onLoad={onImageLoad} />
         </ReactCrop>
       )}
-      {/* Allow then select a part */}
-      {/* create data structure from selected part */}
     </>
   );
 }
