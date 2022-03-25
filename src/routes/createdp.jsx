@@ -14,6 +14,7 @@ import { useRef, useState } from "react";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { useNotifications } from "@mantine/notifications";
+import { useForm } from "@mantine/form";
 
 const useStyles = createStyles((theme, _params, getRef) => ({
   container: {
@@ -61,6 +62,27 @@ export default function CreateDP() {
   const [shapeType, setShapeType] = useState("box");
   const { classes } = useStyles();
   const notifications = useNotifications();
+
+  const getBannerData = () => {
+    let data = new FormData();
+    data.append("file_uploaded", imgSrc);
+    data.append("Link", "queso");
+    data.append("Height", "32.663316582914575");
+    data.append("Width", "31.909547738693465");
+    data.append("Position_x", "32.03517587939699");
+    data.append("Position_y", "31.25785175879397");
+    data.append("Border_radius", "");
+    data.append("Name", "Test Image");
+    data.append("Description", "just to test");
+    data.append("user", "");
+  };
+  const form = useForm({
+    initialValues: {
+      title: "",
+      description: "",
+      link: "",
+    },
+  });
 
   const onFileDrop = (files) => {
     if (files && files.length > 0) {
@@ -153,12 +175,16 @@ export default function CreateDP() {
           variant="filled"
           size="md"
           className={classes.input}
+          value={form.values.title}
+          {...form.getInputProps("title")}
           required
         />
         <Textarea
           label="Banner Description"
           placeholder=""
           variant="filled"
+          value={form.values.description}
+          {...form.getInputProps("description")}
           autosize
           minRows={4}
           radius={"sm"}
@@ -168,7 +194,9 @@ export default function CreateDP() {
         />
         <TextInput
           label="Banner Link"
-          description="this is title of the link shared to users"
+          value={form.values.link}
+          {...form.getInputProps("link")}
+          description="this is the link you'll share to users,add no space or numbers"
           variant="filled"
           size="md"
           className={classes.input}
