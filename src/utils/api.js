@@ -14,4 +14,16 @@ export async function sendBannerInfo(data) {
   }
 }
 
+export async function getBannerInfo(bannerid) {
+  try {
+    const response = await axios({
+      method: "get",
+      url: `http://dp-generator-api.herokuapp.com/${bannerid}/`,
+    });
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 //...data.getHeaders()
