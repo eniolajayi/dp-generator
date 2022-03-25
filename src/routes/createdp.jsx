@@ -10,11 +10,12 @@ import {
   Group,
   createStyles,
 } from "@mantine/core";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { useNotifications } from "@mantine/notifications";
 import { useForm } from "@mantine/form";
+import { sendBannerInfo } from "../utils/api";
 
 const useStyles = createStyles((theme, _params, getRef) => ({
   container: {
@@ -54,28 +55,15 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 }));
 
 export default function CreateDP() {
-  const imgRef = useRef(null);
   const MAX_FILE_SIZE = 60000000;
   const [crop, setCrop] = useState("");
   const [imgSrc, setImgSrc] = useState("");
+  const [file, setFile] = useState();
   const [completedCrop, setCompletedCrop] = useState(false);
   const [shapeType, setShapeType] = useState("box");
-  const { classes } = useStyles();
   const notifications = useNotifications();
+  const { classes } = useStyles();
 
-  const getBannerData = () => {
-    let data = new FormData();
-    data.append("file_uploaded", imgSrc);
-    data.append("Link", "queso");
-    data.append("Height", "32.663316582914575");
-    data.append("Width", "31.909547738693465");
-    data.append("Position_x", "32.03517587939699");
-    data.append("Position_y", "31.25785175879397");
-    data.append("Border_radius", "");
-    data.append("Name", "Test Image");
-    data.append("Description", "just to test");
-    data.append("user", "");
-  };
   const form = useForm({
     initialValues: {
       title: "",
@@ -91,12 +79,52 @@ export default function CreateDP() {
         setImgSrc(reader.result.toString() || "");
       });
       reader.readAsDataURL(files[0]);
+      setFile(files[0]);
     }
   };
 
-  const onImageLoad = (e) => {
-    imgRef.current = e.currentTarget;
-    // const { width, height } = e.currentTarget;
+  const isReady = () => {
+    return (
+      form.values.description !== "" &&
+      form.values.link !== "" &&
+      form.values.title !== "" &&
+      crop &&
+      completedCrop &&
+      file
+    );
+  };
+
+  const handleSubmit = (values) => {
+    console.log(form.values);
+    let data = new FormData();
+    if (isReady() && values) {
+      data.append("file_uploaded", file);
+      data.append("Link", values.link);
+      data.append("Height", crop.height);
+      data.append("Width", crop.width);
+      data.append("Position_x", crop.x);
+      data.append("Position_y", crop.y);
+      data.append("Border_radius", "");
+      data.append("Name", values.name);
+      data.append("Description", values.description);
+      data.append("user", "");
+    }
+    sendBannerInfo(data)
+      .then((res) => {
+        console.log(res.data);
+        notifications.showNotification({
+          message: "Banner created successfuly!",
+          color: "teal",
+        });
+        form.reset();
+      })
+      .catch((err) => {
+        console.log(err);
+        notifications.showNotification({
+          message: "An error occured!",
+          color: "red",
+        });
+      });
   };
 
   return (
@@ -147,7 +175,7 @@ export default function CreateDP() {
               console.log(crop);
             }}
           >
-            <img src={imgSrc} alt="Select an area" onLoad={onImageLoad} />
+            <img src={imgSrc} alt="Select an area" />
           </ReactCrop>
           <Group position="center" spacing={"xs"}>
             <Button
@@ -169,7 +197,12 @@ export default function CreateDP() {
           </Group>
         </section>
       )}
-      <form className={classes.form}>
+      <form
+        className={classes.form}
+        onSubmit={form.onSubmit((values) => {
+          handleSubmit(values);
+        })}
+      >
         <TextInput
           label="Banner Title"
           variant="filled"
@@ -202,7 +235,12 @@ export default function CreateDP() {
           className={classes.input}
           required
         />
-        <Button color="indigo" type="submit" sx={{ width: "min(450px, 100%)" }}>
+        <Button
+          color="indigo"
+          disabled={!isReady()}
+          type="submit"
+          sx={{ width: "min(450px, 100%)" }}
+        >
           Next
         </Button>
       </form>
