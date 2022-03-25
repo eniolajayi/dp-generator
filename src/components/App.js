@@ -17,7 +17,7 @@ function App() {
         },
       }}
     >
-      <NotificationsProvider autoClose={4000}>
+      <NotificationsProvider position="top-right" autoClose={4000}>
         <Layout>
           <Outlet />
         </Layout>

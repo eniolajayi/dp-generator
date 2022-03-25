@@ -13,6 +13,7 @@ import {
 import { useRef, useState } from "react";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
+import { useNotifications } from "@mantine/notifications";
 
 const useStyles = createStyles((theme, _params, getRef) => ({
   container: {
@@ -59,6 +60,7 @@ export default function CreateDP() {
   const [completedCrop, setCompletedCrop] = useState(false);
   const [shapeType, setShapeType] = useState("box");
   const { classes } = useStyles();
+  const notifications = useNotifications();
 
   const onFileDrop = (files) => {
     if (files && files.length > 0) {
@@ -84,7 +86,13 @@ export default function CreateDP() {
             maxSize={MAX_FILE_SIZE}
             accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
             onDrop={(files) => onFileDrop(files)}
-            onReject={(files) => console.log("file did not meet restrictions")}
+            onReject={(files) => {
+              notifications.showNotification({
+                color: "red",
+                title: "Error",
+                message: "file did not meet restrictions, Try again.",
+              });
+            }}
             className={classes.dropzone}
           >
             {(status) => dropzoneChildren(status)}
