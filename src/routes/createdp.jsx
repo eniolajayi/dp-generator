@@ -113,7 +113,6 @@ export default function CreateDP() {
     }
     sendBannerInfo(data)
       .then((res) => {
-        console.log(res.data.Link);
         notifications.showNotification({
           message: "Banner created successfuly!",
           color: "teal",
@@ -122,7 +121,6 @@ export default function CreateDP() {
         navigate(`/generatedp/${res.data.Link}`, { replace: true });
       })
       .catch((err) => {
-        console.log(err);
         notifications.showNotification({
           message: "An error occured!",
           color: "red",
