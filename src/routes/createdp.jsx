@@ -7,6 +7,7 @@ import {
   RadioGroup,
   Radio,
   Button,
+  Group,
 } from "@mantine/core";
 import { useRef, useState } from "react";
 import ReactCrop from "react-image-crop";
@@ -98,14 +99,32 @@ export default function CreateDP() {
           >
             <img src={imgSrc} alt="Select an area" onLoad={onImageLoad} />
           </ReactCrop>
-          <Button
-            variant="subtle"
-            color="indigo"
-            onClick={() => setCompletedCrop(!completedCrop)}
-            sx={{ marginTop: "1rem", marginLeft: "auto", marginRight: "auto" }}
-          >
-            {completedCrop ? "Re-Select" : "Done"}
-          </Button>
+          <Group position="center" spacing={"xs"}>
+            <Button
+              variant="subtle"
+              color="indigo"
+              onClick={() => setCompletedCrop(!completedCrop)}
+              sx={{
+                marginTop: "1rem",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+            >
+              {completedCrop ? "Re-Select" : "Done"}
+            </Button>
+            <Button
+              variant="subtle"
+              color="indigo"
+              onClick={() => setImgSrc("")}
+              sx={{
+                marginTop: "1rem",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+            >
+              Re Select Image
+            </Button>
+          </Group>
         </section>
       )}
       <form
@@ -138,6 +157,14 @@ export default function CreateDP() {
             marginBottom: "1rem",
             width: "min(450px, 100%)",
           }}
+          required
+        />
+        <TextInput
+          label="Banner Link"
+          description="this is title of the link shared to users"
+          variant="filled"
+          size="md"
+          sx={{ marginBottom: "1rem", width: "min(450px, 100%)" }}
           required
         />
         <Button color="indigo" type="submit" sx={{ width: "min(450px, 100%)" }}>
