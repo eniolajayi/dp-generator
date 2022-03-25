@@ -8,11 +8,48 @@ import {
   Radio,
   Button,
   Group,
+  createStyles,
 } from "@mantine/core";
 import { useRef, useState } from "react";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import { useMediaQuery } from "@mantine/hooks";
+
+const useStyles = createStyles((theme, _params, getRef) => ({
+  container: {
+    marginBottom: "2rem",
+    display: "flex",
+    justifyContent: "space-between",
+    flexDirection: "row-reverse",
+    minHeight: "500px",
+    height: "auto",
+    "@media(max-width:920px)": {
+      flexDirection: "column",
+      alignItems: "center",
+    },
+  },
+  dropzone: {
+    width: "min(450px,100%)",
+    height: "300px",
+    marginBottom: "0.875rem",
+  },
+  form: {
+    width: "auto",
+    marginRight: "1rem",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    marginTop: "2rem",
+    flexBasis: "40%",
+    "@media(max-width:920px)": {
+      width: "100%",
+      marginRight: "0",
+    },
+  },
+  input: {
+    marginBottom: "1rem",
+    width: "min(450px, 100%)",
+  },
+}));
 
 export default function CreateDP() {
   const imgRef = useRef(null);
@@ -21,7 +58,7 @@ export default function CreateDP() {
   const [imgSrc, setImgSrc] = useState("");
   const [completedCrop, setCompletedCrop] = useState(false);
   const [shapeType, setShapeType] = useState("box");
-  const matchesTablet = useMediaQuery("(max-width:920px)");
+  const { classes } = useStyles();
 
   const onFileDrop = (files) => {
     if (files && files.length > 0) {
@@ -39,20 +76,7 @@ export default function CreateDP() {
   };
 
   return (
-    <Container
-      sx={{
-        marginBottom: "2rem",
-        display: "flex",
-        justifyContent: "space-between",
-        flexDirection: "row-reverse",
-        minHeight: "500px",
-        height: "auto",
-        "@media(max-width:920px)": {
-          flexDirection: "column",
-          alignItems: "center",
-        },
-      }}
-    >
+    <Container className={classes.container}>
       {Boolean(!imgSrc) ? (
         <section style={{ marginTop: "2rem" }}>
           <Dropzone
@@ -61,11 +85,7 @@ export default function CreateDP() {
             accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
             onDrop={(files) => onFileDrop(files)}
             onReject={(files) => console.log("file did not meet restrictions")}
-            sx={{
-              width: "min(450px,100%)",
-              height: "300px",
-              marginBottom: "0.875rem",
-            }}
+            className={classes.dropzone}
           >
             {(status) => dropzoneChildren(status)}
           </Dropzone>
@@ -104,11 +124,7 @@ export default function CreateDP() {
               variant="subtle"
               color="indigo"
               onClick={() => setCompletedCrop(!completedCrop)}
-              sx={{
-                marginTop: "1rem",
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
+              sx={{ marginTop: "1rem" }}
             >
               {completedCrop ? "Re-Select" : "Done"}
             </Button>
@@ -116,33 +132,19 @@ export default function CreateDP() {
               variant="subtle"
               color="indigo"
               onClick={() => setImgSrc("")}
-              sx={{
-                marginTop: "1rem",
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
+              sx={{ marginTop: "1rem" }}
             >
               Re Select Image
             </Button>
           </Group>
         </section>
       )}
-      <form
-        style={{
-          width: matchesTablet ? "100%" : "auto",
-          marginRight: matchesTablet ? "0" : "1rem",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          marginTop: "2rem",
-          flexBasis: "40%",
-        }}
-      >
+      <form className={classes.form}>
         <TextInput
           label="Banner Title"
           variant="filled"
           size="md"
-          sx={{ marginBottom: "1rem", width: "min(450px, 100%)" }}
+          className={classes.input}
           required
         />
         <Textarea
@@ -153,10 +155,7 @@ export default function CreateDP() {
           minRows={4}
           radius={"sm"}
           size={"md"}
-          sx={{
-            marginBottom: "1rem",
-            width: "min(450px, 100%)",
-          }}
+          className={classes.input}
           required
         />
         <TextInput
@@ -164,7 +163,7 @@ export default function CreateDP() {
           description="this is title of the link shared to users"
           variant="filled"
           size="md"
-          sx={{ marginBottom: "1rem", width: "min(450px, 100%)" }}
+          className={classes.input}
           required
         />
         <Button color="indigo" type="submit" sx={{ width: "min(450px, 100%)" }}>
