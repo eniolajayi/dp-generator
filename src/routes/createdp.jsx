@@ -10,10 +10,13 @@ import {
   Group,
   createStyles,
 } from "@mantine/core";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { useNotifications } from "@mantine/notifications";
+import { useForm } from "@mantine/form";
+import { sendBannerInfo } from "../utils/api";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = createStyles((theme, _params, getRef) => ({
   container: {
@@ -53,14 +56,23 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 }));
 
 export default function CreateDP() {
-  const imgRef = useRef(null);
   const MAX_FILE_SIZE = 60000000;
   const [crop, setCrop] = useState("");
   const [imgSrc, setImgSrc] = useState("");
+  const [file, setFile] = useState();
   const [completedCrop, setCompletedCrop] = useState(false);
   const [shapeType, setShapeType] = useState("box");
-  const { classes } = useStyles();
   const notifications = useNotifications();
+  let navigate = useNavigate();
+  const { classes } = useStyles();
+
+  const form = useForm({
+    initialValues: {
+      title: "",
+      description: "",
+      link: "",
+    },
+  });
 
   const onFileDrop = (files) => {
     if (files && files.length > 0) {
@@ -69,12 +81,51 @@ export default function CreateDP() {
         setImgSrc(reader.result.toString() || "");
       });
       reader.readAsDataURL(files[0]);
+      setFile(files[0]);
     }
   };
 
-  const onImageLoad = (e) => {
-    imgRef.current = e.currentTarget;
-    // const { width, height } = e.currentTarget;
+  const isReady = () => {
+    return (
+      form.values.description !== "" &&
+      form.values.link !== "" &&
+      form.values.title !== "" &&
+      crop &&
+      completedCrop &&
+      file
+    );
+  };
+
+  const handleSubmit = (values) => {
+    console.log(form.values);
+    let data = new FormData();
+    if (isReady() && values) {
+      data.append("file_uploaded", file);
+      data.append("Link", values.link);
+      data.append("Height", crop.height);
+      data.append("Width", crop.width);
+      data.append("Position_x", crop.x);
+      data.append("Position_y", crop.y);
+      data.append("Border_radius", "");
+      data.append("Name", values.name);
+      data.append("Description", values.description);
+      data.append("user", "");
+    }
+    sendBannerInfo(data)
+      .then((res) => {
+        notifications.showNotification({
+          message: "Banner created successfuly!",
+          color: "teal",
+        });
+        form.reset();
+        navigate(`/generatedp/${res.data.Link}`, { replace: true });
+      })
+      .catch((err) => {
+        notifications.showNotification({
+          message: "An error occured!",
+          color: "red",
+        });
+      });
   };
 
   return (
@@ -125,7 +176,7 @@ export default function CreateDP() {
               console.log(crop);
             }}
           >
-            <img src={imgSrc} alt="Select an area" onLoad={onImageLoad} />
+            <img src={imgSrc} alt="Select an area" />
           </ReactCrop>
           <Group position="center" spacing={"xs"}>
             <Button
@@ -147,18 +198,27 @@ export default function CreateDP() {
           </Group>
         </section>
       )}
-      <form className={classes.form}>
+      <form
+        className={classes.form}
+        onSubmit={form.onSubmit((values) => {
+          handleSubmit(values);
+        })}
+      >
         <TextInput
           label="Banner Title"
           variant="filled"
           size="md"
           className={classes.input}
+          value={form.values.title}
+          {...form.getInputProps("title")}
           required
         />
         <Textarea
           label="Banner Description"
           placeholder=""
           variant="filled"
+          value={form.values.description}
+          {...form.getInputProps("description")}
           autosize
           minRows={4}
           radius={"sm"}
@@ -168,13 +228,20 @@ export default function CreateDP() {
         />
         <TextInput
           label="Banner Link"
-          description="this is title of the link shared to users"
+          value={form.values.link}
+          {...form.getInputProps("link")}
+          description="this is the link you'll share to users,add no space or numbers"
           variant="filled"
           size="md"
           className={classes.input}
           required
         />
-        <Button color="indigo" type="submit" sx={{ width: "min(450px, 100%)" }}>
+        <Button
+          color="indigo"
+          disabled={!isReady()}
+          type="submit"
+          sx={{ width: "min(450px, 100%)" }}
+        >
           Next
         </Button>
       </form>
