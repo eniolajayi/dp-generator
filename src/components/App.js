@@ -1,4 +1,5 @@
 import { MantineProvider } from "@mantine/core";
+import { NotificationsProvider } from "@mantine/notifications";
 import { Outlet } from "react-router-dom";
 import "./App.css";
 import Layout from "./layout/Layout";
@@ -16,9 +17,11 @@ function App() {
         },
       }}
     >
-      <Layout>
-        <Outlet />
-      </Layout>
+      <NotificationsProvider position="top-right" autoClose={4000}>
+        <Layout>
+          <Outlet />
+        </Layout>
+      </NotificationsProvider>
     </MantineProvider>
   );
 }
