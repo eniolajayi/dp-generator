@@ -16,6 +16,7 @@ import "react-image-crop/dist/ReactCrop.css";
 import { useNotifications } from "@mantine/notifications";
 import { useForm } from "@mantine/form";
 import { sendBannerInfo } from "../utils/api";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = createStyles((theme, _params, getRef) => ({
   container: {
@@ -62,6 +63,7 @@ export default function CreateDP() {
   const [completedCrop, setCompletedCrop] = useState(false);
   const [shapeType, setShapeType] = useState("box");
   const notifications = useNotifications();
+  let navigate = useNavigate();
   const { classes } = useStyles();
 
   const form = useForm({
@@ -111,12 +113,13 @@ export default function CreateDP() {
     }
     sendBannerInfo(data)
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data.Link);
         notifications.showNotification({
           message: "Banner created successfuly!",
           color: "teal",
         });
         form.reset();
+        navigate(`/generatedp/${res.data.Link}`, { replace: true });
       })
       .catch((err) => {
         console.log(err);
