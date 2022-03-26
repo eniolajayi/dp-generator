@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const HEADER_HEIGHT = "50px";
 const useStyles = createStyles((theme, _params, getRef) => ({
   header: {
-    width: "100vw",
+    width: "100%",
     height: HEADER_HEIGHT,
     backgroundColor: "#000000",
   },
@@ -21,7 +21,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
   navLink: {
     color: "#fff",
     display: "block",
-    padding: "0 1rem",
+    padding: "0 0.875rem",
     textDecoration: "none",
     lineHeight: HEADER_HEIGHT,
   },

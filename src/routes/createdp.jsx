@@ -1,3 +1,4 @@
+// TODO Apply DRY principle, clean up code
 import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import {
   Text,
@@ -72,6 +73,10 @@ export default function CreateDP() {
       description: "",
       link: "",
     },
+    validate: {
+      link: (value) =>
+        /^[-a-zA-Z0-9_]+$/.test(value) ? null : "Invalid title for link",
+    },
   });
 
   const onFileDrop = (files) => {
@@ -97,28 +102,29 @@ export default function CreateDP() {
   };
 
   const handleSubmit = (values) => {
-    console.log(form.values);
     let data = new FormData();
     if (isReady() && values) {
       data.append("file_uploaded", file);
       data.append("Link", values.link);
-      data.append("Height", crop.height);
-      data.append("Width", crop.width);
-      data.append("Position_x", crop.x);
-      data.append("Position_y", crop.y);
+      data.append("Height", Math.round(crop.height));
+      data.append("Width", Math.round(crop.width));
+      data.append("Position_x", Math.round(crop.x));
+      data.append("Position_y", Math.round(crop.y));
       data.append("Border_radius", "");
-      data.append("Name", values.name);
+      data.append("Name", values.title);
       data.append("Description", values.description);
       data.append("user", "");
     }
     sendBannerInfo(data)
       .then((res) => {
-        notifications.showNotification({
-          message: "Banner created successfuly!",
-          color: "teal",
-        });
-        form.reset();
-        navigate(`/generatedp/${res.data.Link}`, { replace: true });
+        if (res.status === 201) {
+          notifications.showNotification({
+            message: "Banner created successfuly!",
+            color: "teal",
+          });
+          form.reset();
+          navigate(`/generatedp/${res.data.Link}`, { replace: true });
+        }
       })
       .catch((err) => {
         notifications.showNotification({
@@ -169,8 +175,8 @@ export default function CreateDP() {
             crop={crop}
             disabled={completedCrop}
             circularCrop={shapeType === "round"}
-            onChange={(_, percentCrop) => {
-              setCrop(percentCrop);
+            onChange={(pixelCrop, _) => {
+              setCrop(pixelCrop);
             }}
             onComplete={() => {
               console.log(crop);
@@ -208,6 +214,7 @@ export default function CreateDP() {
           label="Banner Title"
           variant="filled"
           size="md"
+          maxLength={200}
           className={classes.input}
           value={form.values.title}
           {...form.getInputProps("title")}
@@ -215,8 +222,10 @@ export default function CreateDP() {
         />
         <Textarea
           label="Banner Description"
+          description="(max 200 characters)"
           placeholder=""
           variant="filled"
+          maxLength={200}
           value={form.values.description}
           {...form.getInputProps("description")}
           autosize
@@ -233,6 +242,7 @@ export default function CreateDP() {
           description="this is the link you'll share to users,add no space or numbers"
           variant="filled"
           size="md"
+          maxLength={250}
           className={classes.input}
           required
         />

@@ -6,8 +6,8 @@ export default function Footer() {
   };
 
   return (
-    <footer>
-      <Container sx={{ textAlign: "center" }}>
+    <footer style={{ marginTop: "2rem" }}>
+      <Container sx={{ textAlign: "center", minHeight: "50px" }}>
         <span style={{ fontSize: "0.875rem", fontWeight: "500" }}>
           copyright(c){getCurrentYear()}. all rights reserved
         </span>
