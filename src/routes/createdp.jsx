@@ -72,6 +72,10 @@ export default function CreateDP() {
       description: "",
       link: "",
     },
+    validate: {
+      link: (value) =>
+        /^[-a-zA-Z0-9_]+$/.test(value) ? null : "Invalid title for link",
+    },
   });
 
   const onFileDrop = (files) => {
