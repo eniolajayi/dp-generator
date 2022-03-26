@@ -13,11 +13,9 @@ import {
   Title,
   Spoiler,
   Image,
-  Code,
   Paper,
   Box,
   Skeleton,
-  ScrollArea,
 } from "@mantine/core";
 import { getBannerInfo, makeBanner } from "../utils/api";
 import { useEffect, useState } from "react";
@@ -76,7 +74,7 @@ export default function GenerateDP() {
               message: "Generated successfuly!",
               color: "teal",
             });
-            setImgUrl(res.data.Image.url);
+            setImgUrl(res.data.Image.secure_url);
           }
         })
         .catch((err) => {
@@ -84,6 +82,7 @@ export default function GenerateDP() {
             message: "An error occured!",
             color: "red",
           });
+          console.log(err);
         });
     }
   };
