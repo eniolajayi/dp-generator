@@ -169,7 +169,7 @@ export default function CreateDP() {
             sx={{ marginBottom: "2rem" }}
           >
             <Radio value="box" label={"Box shape"} />
-            <Radio value="round" label={"Round shape"} />
+            <Radio value="round" disabled={true} label={"Round shape"} />
           </RadioGroup>
           <ReactCrop
             crop={crop}
