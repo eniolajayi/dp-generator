@@ -1,3 +1,4 @@
+// TODO Apply DRY principle, clean up code
 import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import {
   Text,
@@ -101,7 +102,6 @@ export default function CreateDP() {
   };
 
   const handleSubmit = (values) => {
-    console.log(form.values);
     let data = new FormData();
     if (isReady() && values) {
       data.append("file_uploaded", file);
