@@ -175,8 +175,8 @@ export default function CreateDP() {
             crop={crop}
             disabled={completedCrop}
             circularCrop={shapeType === "round"}
-            onChange={(_, percentCrop) => {
-              setCrop(percentCrop);
+            onChange={(pixelCrop, _) => {
+              setCrop(pixelCrop);
             }}
             onComplete={() => {
               console.log(crop);
