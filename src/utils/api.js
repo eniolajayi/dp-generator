@@ -26,4 +26,18 @@ export async function getBannerInfo(bannerid) {
   }
 }
 
+export async function makeBanner(data, id) {
+  try {
+    const response = await axios({
+      method: "post",
+      url: `https://dp-generator-api.herokuapp.com/make/dp/${id}/`,
+      data: data,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 //...data.getHeaders()
