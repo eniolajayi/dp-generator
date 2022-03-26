@@ -14,12 +14,11 @@ import {
   Spoiler,
   Image,
   Code,
-  Box,
   Paper,
 } from "@mantine/core";
 import { getBannerInfo, makeBanner } from "../utils/api";
 import { useEffect, useState } from "react";
-import { CheckSqaure, PlusSquare } from "../components/icons";
+import { PlusSquare } from "../components/icons";
 
 const useStyles = createStyles((theme, _params, getRef) => ({
   header: {
@@ -144,7 +143,7 @@ export default function GenerateDP() {
           });
         }}
       >
-        {(status) => dropzoneChildren(status)}
+        {(status, theme) => dropzoneChildren(status, theme)}
       </Dropzone>
       <Paper sx={{ margin: "2rem 0" }} shadow={"xs"} p="lg">
         <Text color="dark">
@@ -157,10 +156,13 @@ export default function GenerateDP() {
       </Paper>
       <Group>
         <Button
-          disabled={Boolean(!imgUrl)}
-          download={imgUrl}
+          disabled={true}
+          href=""
+          download={"my_banner.png"}
           color="teal"
           size="md"
+          component="a"
+          role={"button"}
           onClick={handleClick}
         >
           Download Banner
@@ -173,38 +175,20 @@ export default function GenerateDP() {
   );
 }
 
-export const dropzoneChildren = (status) => {
-  if (status.accepted) {
-    return (
-      <Group>
-        <Button
-          variant="subtle"
-          color="teal"
-          size="sm"
-          leftIcon={<CheckSqaure />}
-        >
-          Re SelectImage
-        </Button>
-        <Text color="indigo">
-          Nice!, download your banner or right click and choose save image as
-        </Text>
-      </Group>
-    );
-  } else {
-    return (
-      <Group>
-        <Button
-          variant="subtle"
-          color="indigo"
-          size="sm"
-          leftIcon={<PlusSquare />}
-        >
-          Upload Image
-        </Button>
-        <Text color="indigo">
-          your image will replace the highlighted portion of the banner
-        </Text>
-      </Group>
-    );
-  }
+export const dropzoneChildren = (status, theme) => {
+  return (
+    <Group>
+      <Button
+        variant="subtle"
+        color="indigo"
+        size="sm"
+        leftIcon={<PlusSquare />}
+      >
+        Upload Image
+      </Button>
+      <Text color="indigo">
+        max(6mb), your image will replace the highlighted area
+      </Text>
+    </Group>
+  );
 };
