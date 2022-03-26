@@ -16,7 +16,7 @@ import {
 } from "@mantine/core";
 import { getBannerInfo, makeBanner } from "../utils/api";
 import { useEffect, useState } from "react";
-import { PlusSquare } from "../components/icons";
+import { CheckSqaure, PlusSquare } from "../components/icons";
 
 const useStyles = createStyles((theme, _params, getRef) => ({
   header: {
@@ -32,7 +32,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 }));
 export default function GenerateDP() {
   const MAX_FILE_SIZE = 60000000;
-  const [file, setFile] = useState();
+  // const [file, setFile] = useState();
   const [area, setArea] = useState();
   const [data, setData] = useState({});
   const [imgUrl, setImgUrl] = useState();
@@ -50,11 +50,18 @@ export default function GenerateDP() {
       });
   }, [bannerid]);
 
-  const getBanner = () => {
+  const onFileDrop = (files) => {
+    if (files && files.length > 0) {
+      // setFile(files[0]);
+      getBanner(files[0], bannerid);
+    }
+  };
+
+  const getBanner = (file, id) => {
     let data = new FormData();
     data.append("file_uploaded", file);
-    if (data && bannerid) {
-      makeBanner(data, bannerid)
+    if (data && bannerid && file) {
+      makeBanner(data, id)
         .then((res) => {
           if (res.status === 201) {
             notifications.showNotification({
@@ -71,13 +78,6 @@ export default function GenerateDP() {
           });
         });
     }
-  };
-
-  const onFileDrop = (files) => {
-    if (files && files.length > 0) {
-      setFile(files[0]);
-    }
-    getBanner();
   };
 
   const handleClick = () => {};
@@ -164,14 +164,16 @@ export const dropzoneChildren = (status) => {
     <Group>
       <Button
         variant="subtle"
-        color="indigo"
+        color={status.accepted === true ? "teal" : "indigo"}
         size="sm"
-        leftIcon={<PlusSquare />}
+        leftIcon={status.accepted === true ? <CheckSqaure /> : <PlusSquare />}
       >
-        Upload Image
+        {status.accepted === true ? "Re SelectImage" : "Upload Image"}
       </Button>
       <Text color="indigo">
-        your image will replace the highlighted portion of the banner
+        {status.accepted === true
+          ? "Nice!, download your banner or right click and choose save as"
+          : " your image will replace the highlighted portion of the banner"}
       </Text>
     </Group>
   );
