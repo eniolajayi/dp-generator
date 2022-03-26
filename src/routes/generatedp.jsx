@@ -53,10 +53,7 @@ export default function GenerateDP() {
         }
       })
       .catch((err) => {
-        notifications.showNotification({
-          message: "An error occured!",
-          color: "red",
-        });
+        console.log(err);
       });
   }, [bannerid, notifications]);
 
