@@ -108,14 +108,14 @@ export default function CreateDP() {
       data.append("Link", values.link);
       data.append("Height", Math.round(crop.height));
       data.append("Width", Math.round(crop.width));
-      data.append("Position_x", crop.x);
-      data.append("Position_y", crop.y);
+      data.append("Position_x", Math.floor(crop.x));
+      data.append("Position_y", Math.floor(crop.y));
       data.append("Border_radius", "");
       data.append("Name", values.title);
       data.append("Description", values.description);
       data.append("user", "");
     }
-    console.log(Math.round(crop.x), Math.round(crop.y));
+    console.log(Math.floor(crop.x), Math.floor(crop.y));
     sendBannerInfo(data)
       .then((res) => {
         if (res.status === 201) {
