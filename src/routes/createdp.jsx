@@ -117,12 +117,14 @@ export default function CreateDP() {
     }
     sendBannerInfo(data)
       .then((res) => {
-        notifications.showNotification({
-          message: "Banner created successfuly!",
-          color: "teal",
-        });
-        form.reset();
-        navigate(`/generatedp/${res.data.Link}`, { replace: true });
+        if (res.status === 201) {
+          notifications.showNotification({
+            message: "Banner created successfuly!",
+            color: "teal",
+          });
+          form.reset();
+          navigate(`/generatedp/${res.data.Link}`, { replace: true });
+        }
       })
       .catch((err) => {
         notifications.showNotification({
