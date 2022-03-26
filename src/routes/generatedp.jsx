@@ -59,7 +59,6 @@ export default function GenerateDP() {
 
   const onFileDrop = (files) => {
     if (files && files.length > 0) {
-      // setFile(files[0]);
       getBanner(files[0], bannerid);
     }
   };
@@ -168,18 +167,20 @@ export default function GenerateDP() {
           </Code>
         </Paper>
         <Group>
-          <Button
-            disabled={Boolean(!imgUrl)}
-            href={imgUrl}
-            download="my_banner"
-            target="_blank"
-            color="teal"
-            size="md"
-            component="a"
-            role={"button"}
-          >
-            Download Banner
-          </Button>
+          {Boolean(imgUrl) && (
+            <Button
+              disabled={Boolean(!imgUrl)}
+              href={imgUrl}
+              download="my_banner"
+              target="_blank"
+              color="teal"
+              size="md"
+              component="a"
+              role={"button"}
+            >
+              Download Banner
+            </Button>
+          )}
           <Button color="indigo" size="md" component={Link} to="/createdp">
             Create New Banner
           </Button>
