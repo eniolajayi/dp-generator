@@ -107,7 +107,7 @@ export default function CreateDP() {
       data.append("Position_x", crop.x);
       data.append("Position_y", crop.y);
       data.append("Border_radius", "");
-      data.append("Name", values.name);
+      data.append("Name", values.title);
       data.append("Description", values.description);
       data.append("user", "");
     }
