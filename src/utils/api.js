@@ -30,7 +30,7 @@ export async function makeBanner(data, id) {
   try {
     const response = await axios({
       method: "post",
-      url: `https://dp-generator-api.herokuapp.com/make/dp/${id}/`,
+      url: `http://dp-generator-api.herokuapp.com/make/dp/${id}/`,
       data: data,
       headers: { "Content-Type": "multipart/form-data" },
     });
