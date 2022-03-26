@@ -214,6 +214,7 @@ export default function CreateDP() {
           label="Banner Title"
           variant="filled"
           size="md"
+          maxLength={200}
           className={classes.input}
           value={form.values.title}
           {...form.getInputProps("title")}
@@ -221,8 +222,10 @@ export default function CreateDP() {
         />
         <Textarea
           label="Banner Description"
+          description="(max 200 characters)"
           placeholder=""
           variant="filled"
+          maxLength={200}
           value={form.values.description}
           {...form.getInputProps("description")}
           autosize
@@ -239,6 +242,7 @@ export default function CreateDP() {
           description="this is the link you'll share to users,add no space or numbers"
           variant="filled"
           size="md"
+          maxLength={250}
           className={classes.input}
           required
         />
