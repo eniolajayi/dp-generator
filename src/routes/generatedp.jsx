@@ -13,6 +13,9 @@ import {
   Title,
   Spoiler,
   Image,
+  Code,
+  Box,
+  Paper,
 } from "@mantine/core";
 import { getBannerInfo, makeBanner } from "../utils/api";
 import { useEffect, useState } from "react";
@@ -80,14 +83,16 @@ export default function GenerateDP() {
     }
   };
 
-  const handleClick = () => {};
+  const handleClick = (event) => {
+    event.target.href = imgUrl;
+  };
 
   return (
     <Container sx={{ marginBottom: "2rem" }}>
       <div className={classes.header}>
         <Title order={1}>{data.Name}</Title>
         <Spoiler maxHeight={200} showLabel="Read more" hideLabel="Hide">
-          <Text size="lg" lineClamp={4}>
+          <Text size="lg" sx={{ width: "min(45ch, 100%)" }}>
             {data.Description}
           </Text>
         </Spoiler>
@@ -141,10 +146,19 @@ export default function GenerateDP() {
       >
         {(status) => dropzoneChildren(status)}
       </Dropzone>
-
+      <Paper sx={{ margin: "2rem 0" }} shadow={"xs"} p="lg">
+        <Text color="dark">
+          Share this url to others, so they can create a customized dp using the
+          banner above
+        </Text>
+        <Code color={"teal"} sx={{ fontSize: "1rem" }}>
+          {window.location.href}
+        </Code>
+      </Paper>
       <Group>
         <Button
           disabled={Boolean(!imgUrl)}
+          download={imgUrl}
           color="teal"
           size="md"
           onClick={handleClick}
@@ -160,21 +174,37 @@ export default function GenerateDP() {
 }
 
 export const dropzoneChildren = (status) => {
-  return (
-    <Group>
-      <Button
-        variant="subtle"
-        color={status.accepted === true ? "teal" : "indigo"}
-        size="sm"
-        leftIcon={status.accepted === true ? <CheckSqaure /> : <PlusSquare />}
-      >
-        {status.accepted === true ? "Re SelectImage" : "Upload Image"}
-      </Button>
-      <Text color="indigo">
-        {status.accepted === true
-          ? "Nice!, download your banner or right click and choose save as"
-          : " your image will replace the highlighted portion of the banner"}
-      </Text>
-    </Group>
-  );
+  if (status.accepted) {
+    return (
+      <Group>
+        <Button
+          variant="subtle"
+          color="teal"
+          size="sm"
+          leftIcon={<CheckSqaure />}
+        >
+          Re SelectImage
+        </Button>
+        <Text color="indigo">
+          Nice!, download your banner or right click and choose save image as
+        </Text>
+      </Group>
+    );
+  } else {
+    return (
+      <Group>
+        <Button
+          variant="subtle"
+          color="indigo"
+          size="sm"
+          leftIcon={<PlusSquare />}
+        >
+          Upload Image
+        </Button>
+        <Text color="indigo">
+          your image will replace the highlighted portion of the banner
+        </Text>
+      </Group>
+    );
+  }
 };
