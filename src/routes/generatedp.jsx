@@ -17,6 +17,7 @@ import {
   Paper,
   Box,
   Skeleton,
+  ScrollArea,
 } from "@mantine/core";
 import { getBannerInfo, makeBanner } from "../utils/api";
 import { useEffect, useState } from "react";
@@ -41,6 +42,7 @@ export default function GenerateDP() {
   const [data, setData] = useState({});
   const [imgUrl, setImgUrl] = useState();
   const notifications = useNotifications();
+  const shareUrl = window.location.href;
   const { classes } = useStyles();
   let { bannerid } = useParams();
 
@@ -157,14 +159,23 @@ export default function GenerateDP() {
         >
           {(status, theme) => dropzoneChildren(status, theme)}
         </Dropzone>
-        <Paper sx={{ margin: "2rem 0" }} shadow={"xs"} p="lg">
+        <Paper sx={{ margin: "2rem 0" }} shadow={"xs"} p="xs">
           <Text color="dark">
-            Share this url to others, so they can create a customized dp using
-            the banner above
+            Copy and Share this url to others, so they can create a customized
+            dp using the banner above
           </Text>
-          <Code color={"teal"} sx={{ fontSize: "1rem" }}>
-            {window.location.href}
-          </Code>
+          <Text
+            color={"dark"}
+            weight={600}
+            size="md"
+            sx={{
+              overflowX: "scroll",
+              maxWidth: "min(500px, 100%)",
+              height: "40px",
+            }}
+          >
+            <span>{shareUrl}</span>
+          </Text>
         </Paper>
         <Group>
           {Boolean(imgUrl) && (
