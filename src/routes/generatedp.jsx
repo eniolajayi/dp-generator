@@ -55,7 +55,7 @@ export default function GenerateDP() {
       .catch((err) => {
         console.log(err);
       });
-  }, [bannerid, notifications]);
+  }, [bannerid]);
 
   const onFileDrop = (files) => {
     if (files && files.length > 0) {
