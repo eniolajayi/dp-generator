@@ -170,7 +170,8 @@ export default function GenerateDP() {
             sx={{
               overflowX: "scroll",
               maxWidth: "min(500px, 100%)",
-              height: "40px",
+              height: "60px",
+              padding: "1rem 0.875rem",
             }}
           >
             <span>{shareUrl}</span>
