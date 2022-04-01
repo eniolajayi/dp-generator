@@ -135,17 +135,17 @@ export default function GenerateDP() {
                 withPlaceholder
                 sx={(theme) => ({
                   position: "relative",
-                  "&::before": {
-                    content: '""',
-                    position: "absolute",
-                    top: `${data.Position_y}px`,
-                    left: `${data.Position_x}px`,
-                    background: theme.black,
-                    width: `${data.Width}px`,
-                    height: `${data.Height}px`,
-                    opacity: "0.4",
-                    zIndex: "3",
-                  },
+                  // "&::before": {
+                  //   content: '""',
+                  //   position: "absolute",
+                  //   top: `${data.Position_y}px`,
+                  //   left: `${data.Position_x}px`,
+                  //   background: theme.black,
+                  //   width: `${data.Width}px`,
+                  //   height: `${data.Height}px`,
+                  //   opacity: "0.4",
+                  //   zIndex: "3",
+                  // },
                 })}
               />
             ) : (
