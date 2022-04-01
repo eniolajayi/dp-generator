@@ -75,7 +75,6 @@ export default function GenerateDP() {
   const onFileDrop = (files) => {
     if (files && files.length > 0) {
       setFile(files[0]);
-      // getBanner(files[0], bannerid);
     }
   };
 
@@ -85,14 +84,13 @@ export default function GenerateDP() {
 
   const handleSubmit = (values) => {
     console.log(values);
-    getBanner(file, bannerid);
-  };
-
-  const getBanner = (file, id) => {
     let data = new FormData();
     data.append("file_uploaded", file);
-    if (data && id && file) {
-      makeBanner(data, id)
+    data.append("Name", values.name);
+    data.append("University", values.university);
+    data.append("Slug", bannerid);
+    if (data && values && file) {
+      makeBanner(data, bannerid)
         .then((res) => {
           if (res.status === 201) {
             notifications.showNotification({
