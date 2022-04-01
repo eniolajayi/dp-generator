@@ -255,15 +255,17 @@ export default function GenerateDP() {
             Download Banner
           </Button>
         )}
-        <Button
-          color="indigo"
-          variant="outline"
-          size="md"
-          component={Link}
-          to="/createdp"
-        >
-          Create New Banner
-        </Button>
+        {TEXT_IS_AVAILABLE && (
+          <Button
+            color="indigo"
+            variant="outline"
+            size="md"
+            component={Link}
+            to="/createdp"
+          >
+            Create New Banner
+          </Button>
+        )}
       </Group>
     </Container>
   );
