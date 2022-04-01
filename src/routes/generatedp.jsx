@@ -15,7 +15,6 @@ import {
   Spoiler,
   Image,
   Paper,
-  Box,
   TextInput,
   Skeleton,
 } from "@mantine/core";
