@@ -110,7 +110,10 @@ export default function CreateDP() {
       data.append("Width", Math.round(crop.width));
       data.append("Position_x", Math.floor(crop.x));
       data.append("Position_y", Math.floor(crop.y));
-      data.append("Border_radius", "");
+      data.append(
+        "Border_radius",
+        shapeType === "round" ? Math.round(crop.height) / 2 : ""
+      );
       data.append("Name", values.title);
       data.append("Description", values.description);
       data.append("user", "");
@@ -170,7 +173,7 @@ export default function CreateDP() {
             sx={{ marginBottom: "2rem" }}
           >
             <Radio value="box" label={"Box shape"} />
-            <Radio value="round" disabled={true} label={"Round shape"} />
+            <Radio value="round" label={"Round shape"} />
           </RadioGroup>
           <ReactCrop
             crop={crop}

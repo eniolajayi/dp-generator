@@ -39,5 +39,3 @@ export async function makeBanner(data, id) {
     console.error(error);
   }
 }
-
-//...data.getHeaders()

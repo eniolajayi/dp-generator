@@ -4,6 +4,7 @@ import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import { useNotifications } from "@mantine/notifications";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
+import { useForm } from "@mantine/form";
 import {
   createStyles,
   Text,
@@ -14,7 +15,7 @@ import {
   Spoiler,
   Image,
   Paper,
-  Box,
+  TextInput,
   Skeleton,
 } from "@mantine/core";
 import { getBannerInfo, makeBanner } from "../utils/api";
@@ -32,6 +33,10 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     marginTop: "1rem",
     marginBottom: "2rem",
   },
+  input: {
+    marginBottom: "1rem",
+    width: "500px",
+  },
 }));
 export default function GenerateDP() {
   const MAX_FILE_SIZE = 60000000;
@@ -39,10 +44,19 @@ export default function GenerateDP() {
   const [area, setArea] = useState();
   const [data, setData] = useState({});
   const [imgUrl, setImgUrl] = useState();
+  const [file, setFile] = useState();
   const notifications = useNotifications();
   const shareUrl = window.location.href;
   const { classes } = useStyles();
   let { bannerid } = useParams();
+  let TEXT_IS_AVAILABLE = true;
+
+  const form = useForm({
+    initialValues: {
+      name: "",
+      university: "",
+    },
+  });
 
   useEffect(() => {
     getBannerInfo(bannerid)
@@ -55,19 +69,27 @@ export default function GenerateDP() {
       .catch((err) => {
         console.log(err);
       });
-  }, [bannerid, notifications]);
+  }, [bannerid]);
 
   const onFileDrop = (files) => {
     if (files && files.length > 0) {
-      getBanner(files[0], bannerid);
+      setFile(files[0]);
     }
   };
 
-  const getBanner = (file, id) => {
+  const isReady = () => {
+    return form.values.name !== "" && form.values.university !== "" && file;
+  };
+
+  const handleSubmit = (values) => {
+    console.log(values);
     let data = new FormData();
     data.append("file_uploaded", file);
-    if (data && bannerid && file) {
-      makeBanner(data, id)
+    data.append("Name", values.name);
+    data.append("University", values.university);
+    data.append("Slug", bannerid);
+    if (data && values && file) {
+      makeBanner(data, bannerid)
         .then((res) => {
           if (res.status === 201) {
             notifications.showNotification({
@@ -89,118 +111,166 @@ export default function GenerateDP() {
 
   return (
     <Container sx={{ marginBottom: "2rem" }}>
-      <Box>
+      <Skeleton visible={loading}>
+        <div className={classes.header}>
+          <Title order={1}>{data.Name}</Title>
+          <Spoiler maxHeight={200} showLabel="Read more" hideLabel="Hide">
+            <Text size="lg" sx={{ width: "min(45ch, 100%)" }}>
+              {data.Description}
+            </Text>
+          </Spoiler>
+        </div>
+      </Skeleton>
+      <section>
+        <Text color="indigo" size="sm" sx={{ marginBottom: "0.87rem" }}>
+          Create your personalized dp banner
+        </Text>
+        {/*TODO solve for round crop */}
         <Skeleton visible={loading}>
-          <div className={classes.header}>
-            <Title order={1}>{data.Name}</Title>
-            <Spoiler maxHeight={200} showLabel="Read more" hideLabel="Hide">
-              <Text size="lg" sx={{ width: "min(45ch, 100%)" }}>
-                {data.Description}
-              </Text>
-            </Spoiler>
-          </div>
+          <ReactCrop crop={area} disabled={true} onChange={(c) => setArea(c)}>
+            {Boolean(!imgUrl) ? (
+              <Image
+                src={data.Banner}
+                alt="banner"
+                withPlaceholder
+                sx={(theme) => ({
+                  position: "relative",
+                  // "&::before": {
+                  //   content: '""',
+                  //   position: "absolute",
+                  //   top: `${data.Position_y}px`,
+                  //   left: `${data.Position_x}px`,
+                  //   background: theme.black,
+                  //   width: `${data.Width}px`,
+                  //   height: `${data.Height}px`,
+                  //   opacity: "0.4",
+                  //   zIndex: "3",
+                  // },
+                })}
+              />
+            ) : (
+              <Image src={imgUrl} alt="new banner" />
+            )}
+          </ReactCrop>
         </Skeleton>
-        <section>
-          <Text color="indigo" size="sm" sx={{ marginBottom: "0.87rem" }}>
-            Create your personalized dp banner
-          </Text>
-          {/*TODO solve for round crop */}
-          <Skeleton visible={loading}>
-            <ReactCrop crop={area} disabled={true} onChange={(c) => setArea(c)}>
-              {Boolean(!imgUrl) ? (
-                <Image
-                  src={data.Banner}
-                  alt="banner"
-                  withPlaceholder
-                  sx={(theme) => ({
-                    position: "relative",
-                    "&::before": {
-                      content: '""',
-                      position: "absolute",
-                      top: `${data.Position_y}px`,
-                      left: `${data.Position_x}px`,
-                      background: theme.black,
-                      width: `${data.Width}px`,
-                      height: `${data.Height}px`,
-                      opacity: "0.4",
-                      zIndex: "3",
-                    },
-                  })}
-                />
-              ) : (
-                <Image src={imgUrl} alt="new banner" />
-              )}
-            </ReactCrop>
-          </Skeleton>
-        </section>
-        <Dropzone
-          multiple={false}
-          maxSize={MAX_FILE_SIZE}
-          accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
-          classNames={{
-            root: classes.dropzoneRoot,
-          }}
-          onDrop={(files) => {
-            notifications.showNotification({
-              color: "teal",
-              title: "File accepted",
-              message: "processing.. please wait",
-            });
-            onFileDrop(files);
-          }}
-          onReject={(files) => {
-            notifications.showNotification({
-              color: "red",
-              title: "Error",
-              message: "file did not meet restrictions, Try again.",
-            });
+      </section>
+      <Dropzone
+        multiple={false}
+        maxSize={MAX_FILE_SIZE}
+        accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
+        classNames={{
+          root: classes.dropzoneRoot,
+        }}
+        onDrop={(files) => {
+          notifications.showNotification({
+            color: "teal",
+            title: "File accepted",
+            message: "File Upload successful!",
+          });
+          onFileDrop(files);
+        }}
+        onReject={(files) => {
+          notifications.showNotification({
+            color: "red",
+            title: "Error",
+            message: "file did not meet restrictions, Try again.",
+          });
+        }}
+      >
+        {(status, theme) => dropzoneChildren(status, theme, data, imgUrl)}
+      </Dropzone>
+      {TEXT_IS_AVAILABLE && (
+        <Group>
+          <form
+            className={classes.form}
+            onSubmit={form.onSubmit((values) => {
+              handleSubmit(values);
+            })}
+          >
+            <TextInput
+              label="Enter your name"
+              variant="filled"
+              size="md"
+              maxLength={200}
+              className={classes.input}
+              value={form.values.name}
+              {...form.getInputProps("name")}
+              required
+            />
+            <TextInput
+              label="Enter full name of university"
+              variant="filled"
+              size="md"
+              maxLength={300}
+              className={classes.input}
+              value={form.values.university}
+              {...form.getInputProps("university")}
+              required
+            />
+            <Group position="left" mt="md">
+              <Button
+                disabled={!isReady()}
+                type="submit"
+                size="md"
+                color="blue"
+              >
+                Generate Banner
+              </Button>
+            </Group>
+          </form>
+        </Group>
+      )}
+      <Paper sx={{ margin: "2rem 0" }} shadow={"xs"} p="xs">
+        <Text color="dark">
+          Copy and Share this url to others, so they can create a customized dp
+          using the banner above
+        </Text>
+        <Text
+          color={"dark"}
+          weight={600}
+          size="md"
+          sx={{
+            overflowX: "scroll",
+            maxWidth: "min(800px, 100%)",
+            height: "80px",
+            padding: "1rem 0.875rem",
           }}
         >
-          {(status, theme) => dropzoneChildren(status, theme)}
-        </Dropzone>
-        <Paper sx={{ margin: "2rem 0" }} shadow={"xs"} p="xs">
-          <Text color="dark">
-            Copy and Share this url to others, so they can create a customized
-            dp using the banner above
-          </Text>
-          <Text
-            color={"dark"}
-            weight={600}
+          <span>{shareUrl}</span>
+        </Text>
+      </Paper>
+      <Group>
+        {Boolean(imgUrl) && (
+          <Button
+            disabled={Boolean(!imgUrl)}
+            href={imgUrl}
+            download="my_banner"
+            target="_blank"
+            color="teal"
             size="md"
-            sx={{
-              overflowX: "scroll",
-              maxWidth: "min(500px, 100%)",
-              height: "40px",
-            }}
+            component="a"
+            role={"button"}
           >
-            <span>{shareUrl}</span>
-          </Text>
-        </Paper>
-        <Group>
-          {Boolean(imgUrl) && (
-            <Button
-              disabled={Boolean(!imgUrl)}
-              href={imgUrl}
-              download="my_banner"
-              target="_blank"
-              color="teal"
-              size="md"
-              component="a"
-              role={"button"}
-            >
-              Download Banner
-            </Button>
-          )}
-          <Button color="indigo" size="md" component={Link} to="/createdp">
+            Download Banner
+          </Button>
+        )}
+        {!TEXT_IS_AVAILABLE && (
+          <Button
+            color="indigo"
+            variant="outline"
+            size="md"
+            component={Link}
+            to="/createdp"
+          >
             Create New Banner
           </Button>
-        </Group>
-      </Box>
+        )}
+      </Group>
     </Container>
   );
 }
 
-export const dropzoneChildren = (status, theme) => {
+export const dropzoneChildren = (status, theme, data, url) => {
   return (
     <Group>
       <Button
@@ -212,7 +282,11 @@ export const dropzoneChildren = (status, theme) => {
         Upload Image
       </Button>
       <Text color="indigo">
-        max(6mb), your image will replace the highlighted area
+        max(6mb),{" "}
+        {Boolean(url)
+          ? "you can re-upload to change the image"
+          : "your image will replace the avatar area."}{" "}
+        {`${data.Width} by ${data.Height} works best`}
       </Text>
     </Group>
   );
