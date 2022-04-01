@@ -112,7 +112,7 @@ export default function CreateDP() {
       data.append("Position_y", Math.floor(crop.y));
       data.append(
         "Border_radius",
-        shapeType === "round" ? Math.round(crop.height) / 2 : ""
+        shapeType === "round" ? Math.round(crop.height / 2) : ""
       );
       data.append("Name", values.title);
       data.append("Description", values.description);
