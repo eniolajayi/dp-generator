@@ -4,6 +4,7 @@ import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import { useNotifications } from "@mantine/notifications";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
+import { useForm } from "@mantine/form";
 import {
   createStyles,
   Text,
@@ -15,6 +16,7 @@ import {
   Image,
   Paper,
   Box,
+  TextInput,
   Skeleton,
 } from "@mantine/core";
 import { getBannerInfo, makeBanner } from "../utils/api";
@@ -32,6 +34,10 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     marginTop: "1rem",
     marginBottom: "2rem",
   },
+  input: {
+    marginBottom: "1rem",
+    width: "500px",
+  },
 }));
 export default function GenerateDP() {
   const MAX_FILE_SIZE = 60000000;
@@ -39,10 +45,17 @@ export default function GenerateDP() {
   const [area, setArea] = useState();
   const [data, setData] = useState({});
   const [imgUrl, setImgUrl] = useState();
+  const [file, setFile] = useState();
   const notifications = useNotifications();
   const shareUrl = window.location.href;
   const { classes } = useStyles();
   let { bannerid } = useParams();
+  const form = useForm({
+    initialValues: {
+      name: "",
+      university: "",
+    },
+  });
 
   useEffect(() => {
     getBannerInfo(bannerid)
@@ -59,14 +72,24 @@ export default function GenerateDP() {
 
   const onFileDrop = (files) => {
     if (files && files.length > 0) {
-      getBanner(files[0], bannerid);
+      setFile(files[0]);
+      // getBanner(files[0], bannerid);
     }
+  };
+
+  const isReady = () => {
+    return form.values.name !== "" && form.values.university !== "" && file;
+  };
+
+  const handleSubmit = (values) => {
+    console.log(values);
+    getBanner(file, bannerid);
   };
 
   const getBanner = (file, id) => {
     let data = new FormData();
     data.append("file_uploaded", file);
-    if (data && bannerid && file) {
+    if (data && id && file) {
       makeBanner(data, id)
         .then((res) => {
           if (res.status === 201) {
@@ -144,7 +167,7 @@ export default function GenerateDP() {
             notifications.showNotification({
               color: "teal",
               title: "File accepted",
-              message: "processing.. please wait",
+              message: "File Upload successful!",
             });
             onFileDrop(files);
           }}
@@ -156,8 +179,48 @@ export default function GenerateDP() {
             });
           }}
         >
-          {(status, theme) => dropzoneChildren(status, theme)}
+          {(status, theme) => dropzoneChildren(status, theme, data)}
         </Dropzone>
+
+        <Group>
+          <form
+            className={classes.form}
+            onSubmit={form.onSubmit((values) => {
+              handleSubmit(values);
+            })}
+          >
+            <TextInput
+              label="Enter your name"
+              variant="filled"
+              size="md"
+              maxLength={200}
+              className={classes.input}
+              value={form.values.name}
+              {...form.getInputProps("name")}
+              required
+            />
+            <TextInput
+              label="Enter full name of university"
+              variant="filled"
+              size="md"
+              maxLength={300}
+              className={classes.input}
+              value={form.values.university}
+              {...form.getInputProps("university")}
+              required
+            />
+            <Group position="left" mt="md">
+              <Button
+                disabled={!isReady()}
+                type="submit"
+                size="md"
+                color="blue"
+              >
+                Generate Banner
+              </Button>
+            </Group>
+          </form>
+        </Group>
         <Paper sx={{ margin: "2rem 0" }} shadow={"xs"} p="xs">
           <Text color="dark">
             Copy and Share this url to others, so they can create a customized
@@ -169,8 +232,8 @@ export default function GenerateDP() {
             size="md"
             sx={{
               overflowX: "scroll",
-              maxWidth: "min(500px, 100%)",
-              height: "60px",
+              maxWidth: "min(800px, 100%)",
+              height: "80px",
               padding: "1rem 0.875rem",
             }}
           >
@@ -192,7 +255,13 @@ export default function GenerateDP() {
               Download Banner
             </Button>
           )}
-          <Button color="indigo" size="md" component={Link} to="/createdp">
+          <Button
+            color="indigo"
+            variant="outline"
+            size="md"
+            component={Link}
+            to="/createdp"
+          >
             Create New Banner
           </Button>
         </Group>
@@ -201,7 +270,7 @@ export default function GenerateDP() {
   );
 }
 
-export const dropzoneChildren = (status, theme) => {
+export const dropzoneChildren = (status, theme, data) => {
   return (
     <Group>
       <Button
@@ -213,7 +282,8 @@ export const dropzoneChildren = (status, theme) => {
         Upload Image
       </Button>
       <Text color="indigo">
-        max(6mb), your image will replace the highlighted area
+        max(6mb), your image will replace the highlighted area.{" "}
+        {`${data.Width} by ${data.Height} works best`}
       </Text>
     </Group>
   );
