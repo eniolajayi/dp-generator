@@ -50,6 +50,8 @@ export default function GenerateDP() {
   const shareUrl = window.location.href;
   const { classes } = useStyles();
   let { bannerid } = useParams();
+  let TEXT_IS_AVAILABLE = true;
+
   const form = useForm({
     initialValues: {
       name: "",
@@ -181,46 +183,47 @@ export default function GenerateDP() {
         >
           {(status, theme) => dropzoneChildren(status, theme, data)}
         </Dropzone>
-
-        <Group>
-          <form
-            className={classes.form}
-            onSubmit={form.onSubmit((values) => {
-              handleSubmit(values);
-            })}
-          >
-            <TextInput
-              label="Enter your name"
-              variant="filled"
-              size="md"
-              maxLength={200}
-              className={classes.input}
-              value={form.values.name}
-              {...form.getInputProps("name")}
-              required
-            />
-            <TextInput
-              label="Enter full name of university"
-              variant="filled"
-              size="md"
-              maxLength={300}
-              className={classes.input}
-              value={form.values.university}
-              {...form.getInputProps("university")}
-              required
-            />
-            <Group position="left" mt="md">
-              <Button
-                disabled={!isReady()}
-                type="submit"
+        {TEXT_IS_AVAILABLE && (
+          <Group>
+            <form
+              className={classes.form}
+              onSubmit={form.onSubmit((values) => {
+                handleSubmit(values);
+              })}
+            >
+              <TextInput
+                label="Enter your name"
+                variant="filled"
                 size="md"
-                color="blue"
-              >
-                Generate Banner
-              </Button>
-            </Group>
-          </form>
-        </Group>
+                maxLength={200}
+                className={classes.input}
+                value={form.values.name}
+                {...form.getInputProps("name")}
+                required
+              />
+              <TextInput
+                label="Enter full name of university"
+                variant="filled"
+                size="md"
+                maxLength={300}
+                className={classes.input}
+                value={form.values.university}
+                {...form.getInputProps("university")}
+                required
+              />
+              <Group position="left" mt="md">
+                <Button
+                  disabled={!isReady()}
+                  type="submit"
+                  size="md"
+                  color="blue"
+                >
+                  Generate Banner
+                </Button>
+              </Group>
+            </form>
+          </Group>
+        )}
         <Paper sx={{ margin: "2rem 0" }} shadow={"xs"} p="xs">
           <Text color="dark">
             Copy and Share this url to others, so they can create a customized
