@@ -282,7 +282,7 @@ export const dropzoneChildren = (status, theme, data) => {
         Upload Image
       </Button>
       <Text color="indigo">
-        max(6mb), your image will replace the highlighted area.{" "}
+        max(6mb), your image will replace the avatar area.{" "}
         {`${data.Width} by ${data.Height} works best`}
       </Text>
     </Group>
