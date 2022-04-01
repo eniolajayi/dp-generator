@@ -146,6 +146,24 @@ export default function GenerateDP() {
                   //   opacity: "0.4",
                   //   zIndex: "3",
                   // },
+                  "&::before": {
+                    content: `${
+                      file ? "'Uploaded file exists'" : "'No file uploaded'"
+                    }`,
+                    position: "absolute",
+                    top: `5%`,
+                    left: `5%`,
+                    padding: "1rem",
+                    fontWeight: "600",
+                    color: file ? theme.colors.teal : theme.colors.blue,
+                    background: theme.colors.dark,
+                    width: `auto`,
+                    height: `35px`,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    zIndex: "3",
+                  },
                 })}
               />
             ) : (
@@ -165,7 +183,7 @@ export default function GenerateDP() {
           notifications.showNotification({
             color: "teal",
             title: "File accepted",
-            message: "File Upload successful!",
+            message: "File Upload successful! Fill remaining fields",
           });
           onFileDrop(files);
         }}
@@ -177,7 +195,7 @@ export default function GenerateDP() {
           });
         }}
       >
-        {(status, theme) => dropzoneChildren(status, theme, data, imgUrl)}
+        {(status, theme) => dropzoneChildren(status, theme, data, file)}
       </Dropzone>
       {TEXT_IS_AVAILABLE && (
         <Group>
@@ -270,22 +288,22 @@ export default function GenerateDP() {
   );
 }
 
-export const dropzoneChildren = (status, theme, data, url) => {
+export const dropzoneChildren = (status, theme, data, file) => {
   return (
     <Group>
       <Button
         variant="subtle"
-        color="indigo"
+        color={file ? "teal" : "blue"}
         size="sm"
         leftIcon={<PlusSquare />}
       >
-        Upload Image
+        {file ? "Reupload  Image" : "Upload Image"}
       </Button>
-      <Text color="indigo">
-        max(6mb),{" "}
-        {Boolean(url)
-          ? "you can re-upload to change the image"
-          : "your image will replace the avatar area."}{" "}
+      <Text color={Boolean(file) ? "teal" : "blue"}>
+        {" "}
+        {Boolean(file)
+          ? "Good Job! please fill the remaining inputs below or upload a different image max(6mb), - "
+          : " max(6mb), your image will replace the avatar area."}{" "}
         {`${data.Width} by ${data.Height} works best`}
       </Text>
     </Group>
