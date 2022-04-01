@@ -177,7 +177,7 @@ export default function GenerateDP() {
           });
         }}
       >
-        {(status, theme) => dropzoneChildren(status, theme, data)}
+        {(status, theme) => dropzoneChildren(status, theme, data, imgUrl)}
       </Dropzone>
       {TEXT_IS_AVAILABLE && (
         <Group>
@@ -270,7 +270,7 @@ export default function GenerateDP() {
   );
 }
 
-export const dropzoneChildren = (status, theme, data) => {
+export const dropzoneChildren = (status, theme, data, url) => {
   return (
     <Group>
       <Button
@@ -282,7 +282,10 @@ export const dropzoneChildren = (status, theme, data) => {
         Upload Image
       </Button>
       <Text color="indigo">
-        max(6mb), your image will replace the avatar area.{" "}
+        max(6mb),{" "}
+        {Boolean(url)
+          ? "you can re-upload to change the image"
+          : "your image will replace the avatar area."}{" "}
         {`${data.Width} by ${data.Height} works best`}
       </Text>
     </Group>
