@@ -255,7 +255,7 @@ export default function GenerateDP() {
             Download Banner
           </Button>
         )}
-        {TEXT_IS_AVAILABLE && (
+        {!TEXT_IS_AVAILABLE && (
           <Button
             color="indigo"
             variant="outline"
