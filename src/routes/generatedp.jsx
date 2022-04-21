@@ -290,7 +290,7 @@ export default function GenerateDP() {
             variant="outline"
             size="md"
             component={Link}
-            to="/createdp"
+            to="banner/create"
           >
             Create New Banner
           </Button>

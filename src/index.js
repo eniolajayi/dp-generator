@@ -16,8 +16,10 @@ ReactDOM.render(
         <Route path="/" element={<App />}>
           <Route index element={<Home />} />
           <Route path="/help" element={<Help />} />
-          <Route path="/createdp" element={<CreateDP />} />
-          <Route path="/generatedp/:bannerid" element={<GenerateDP />} />
+          <Route path="/banner" element={<></>}>
+            <Route path="/create" element={<CreateDP />} />
+            <Route path="/generate/:bannerid" element={<GenerateDP />} />
+          </Route>
           <Route path="*" element={<h1>404 - no matching url</h1>} />
         </Route>
       </Routes>
