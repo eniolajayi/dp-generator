@@ -18,7 +18,12 @@ import {
   TextInput,
   Skeleton,
 } from "@mantine/core";
-import { getBannerInfo, makeBanner } from "../utils/api";
+import {
+  getBannerInfo,
+  makeBanner,
+  makeBannerStaxCampus,
+  makeBannerStaxLink,
+} from "../utils/api";
 import { useEffect, useState } from "react";
 import { PlusSquare } from "../components/icons";
 
@@ -110,30 +115,39 @@ export default function GenerateDP() {
 
   const handleSubmit = (values) => {
     console.log(values);
+    let result;
     let data = new FormData();
     data.append("file_uploaded", file);
-    data.append("Name", values.name);
-    data.append("University", values.university);
-    data.append("Slug", bannerid);
-    if (data && values && file) {
-      makeBanner(data, bannerid)
-        .then((res) => {
-          if (res.status === 201) {
-            notifications.showNotification({
-              message: "Generated successfuly!",
-              color: "teal",
-            });
-            setImgUrl(res.data.Image.secure_url);
-          }
-        })
-        .catch((err) => {
-          notifications.showNotification({
-            message: "An error occured!",
-            color: "red",
-          });
-          console.log(err);
-        });
+    if (FOR_STAX) {
+      data.append("Name", values.name);
+      data.append("University", values.university);
+      result = makeBannerStaxCampus(data);
+    } else if (FOR_STAX && FOR_STAX_CAMPUS) {
+      data.append("Name", values.name);
+      data.append("Link", values.link);
+      result = makeBannerStaxLink(data);
+    } else {
+      data.append("Slug", bannerid);
+      result = makeBanner(data, bannerid);
     }
+
+    result
+      .then((res) => {
+        if (res.status === 201) {
+          notifications.showNotification({
+            message: "Generated successfuly!",
+            color: "teal",
+          });
+          setImgUrl(res.data.Image.secure_url);
+        }
+      })
+      .catch((err) => {
+        notifications.showNotification({
+          message: "An error occured!",
+          color: "red",
+        });
+        console.log(err);
+      });
   };
 
   return (
