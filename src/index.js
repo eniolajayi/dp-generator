@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./components/App";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import Help from "./routes/help";
 import Home from "./routes/home";
 import CreateDP from "./routes/createdp";
@@ -16,9 +16,16 @@ ReactDOM.render(
         <Route path="/" element={<App />}>
           <Route index element={<Home />} />
           <Route path="/help" element={<Help />} />
-          <Route path="/banner" element={<></>}>
-            <Route path="/create" element={<CreateDP />} />
-            <Route path="/generate/:bannerid" element={<GenerateDP />} />
+          <Route
+            path="/banner"
+            element={
+              <>
+                <Outlet />
+              </>
+            }
+          >
+            <Route path="/banner/create" element={<CreateDP />} />
+            <Route path="/banner/generate/:bannerid" element={<GenerateDP />} />
           </Route>
           <Route path="*" element={<h1>404 - no matching url</h1>} />
         </Route>
