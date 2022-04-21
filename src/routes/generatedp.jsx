@@ -106,11 +106,14 @@ export default function GenerateDP() {
   };
 
   const isReady = () => {
-    return (
-      file &&
-      form.values.name !== "" &&
-      (form.values.university !== "" || form.values.link !== "")
-    );
+    if (FOR_STAX) {
+      return (
+        file &&
+        form.values.name !== "" &&
+        (form.values.university !== "" || form.values.link !== "")
+      );
+    }
+    return Boolean(file);
   };
 
   const handleSubmit = (values) => {
