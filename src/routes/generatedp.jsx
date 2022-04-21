@@ -68,7 +68,7 @@ export default function GenerateDP() {
   let FOR_STAX_CAMPUS;
   /* Custom banner id detection to seperate 
   stax banners from other banners */
-  if (bannerid === "stax") {
+  if (bannerid === "stax" || bannerid === "staxcampus") {
     FOR_STAX = true;
     FOR_STAX_CAMPUS = true;
   } else if (bannerid === "stax-with-link") {
