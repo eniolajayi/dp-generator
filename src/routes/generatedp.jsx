@@ -37,6 +37,12 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     marginBottom: "1rem",
     width: "500px",
   },
+  shareUrlWrapper: {
+    overflowX: "scroll",
+    maxWidth: "min(800px, 100%)",
+    height: "80px",
+    padding: "1rem 0.875rem",
+  },
 }));
 export default function GenerateDP() {
   const MAX_FILE_SIZE = 60000000;
@@ -248,15 +254,10 @@ export default function GenerateDP() {
           using the banner above
         </Text>
         <Text
+          className={classes.shareUrlWrapper}
           color={"dark"}
           weight={600}
           size="md"
-          sx={{
-            overflowX: "scroll",
-            maxWidth: "min(800px, 100%)",
-            height: "80px",
-            padding: "1rem 0.875rem",
-          }}
         >
           <span>{shareUrl}</span>
         </Text>
