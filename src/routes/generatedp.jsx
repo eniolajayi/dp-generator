@@ -242,19 +242,8 @@ export default function GenerateDP() {
               {...form.getInputProps("name")}
               required
             />
-            {/* if link is for stax campus show Link input*/}
+            {/* if link is for stax show University input*/}
             {FOR_STAX_CAMPUS ? (
-              <TextInput
-                label="Enter link here"
-                variant="filled"
-                size="md"
-                maxLength={300}
-                className={classes.input}
-                value={form.values.link}
-                {...form.getInputProps("link")}
-                required
-              />
-            ) : (
               <TextInput
                 label="Enter full name of university"
                 variant="filled"
@@ -263,6 +252,17 @@ export default function GenerateDP() {
                 className={classes.input}
                 value={form.values.university}
                 {...form.getInputProps("university")}
+                required
+              />
+            ) : (
+              <TextInput
+                label="Enter link here"
+                variant="filled"
+                size="md"
+                maxLength={300}
+                className={classes.input}
+                value={form.values.link}
+                {...form.getInputProps("link")}
                 required
               />
             )}
