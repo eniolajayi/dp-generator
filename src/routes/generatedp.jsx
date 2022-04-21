@@ -136,7 +136,6 @@ export default function GenerateDP() {
         <Text color="indigo" size="sm" sx={{ marginBottom: "0.87rem" }}>
           Create your personalized dp banner
         </Text>
-        {/*TODO solve for round crop */}
         <Skeleton visible={loading}>
           <ReactCrop crop={area} disabled={true} onChange={(c) => setArea(c)}>
             {Boolean(!imgUrl) ? (
