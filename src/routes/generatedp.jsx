@@ -70,10 +70,10 @@ export default function GenerateDP() {
   stax banners from other banners */
   if (bannerid === "stax") {
     FOR_STAX = true;
-    FOR_STAX_CAMPUS = false;
-  } else if (bannerid === "staxcampus") {
-    FOR_STAX = true;
     FOR_STAX_CAMPUS = true;
+  } else if (bannerid === "stax-with-link") {
+    FOR_STAX = true;
+    FOR_STAX_CAMPUS = false;
   } else {
     FOR_STAX = false;
     FOR_STAX_CAMPUS = false;
