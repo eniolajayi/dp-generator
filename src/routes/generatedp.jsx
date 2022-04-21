@@ -79,7 +79,11 @@ export default function GenerateDP() {
   };
 
   const isReady = () => {
-    return form.values.name !== "" && form.values.university !== "" && file;
+    return (
+      file &&
+      form.values.name !== "" &&
+      (form.values.university !== "" || form.values.link !== "")
+    );
   };
 
   const handleSubmit = (values) => {
