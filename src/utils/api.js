@@ -1,5 +1,4 @@
 import axios from "axios";
-// post banner data
 export async function sendBannerInfo(data) {
   try {
     const response = await axios({
