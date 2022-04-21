@@ -60,7 +60,7 @@ export default function GenerateDP() {
    for stax are controlled with these flags
    until support for text selection.*/
   let FOR_STAX = true;
-  let FOR_STAX_ACADEMY = false;
+  let FOR_STAX_CAMPUS = false;
 
   const form = useForm({
     initialValues: {
@@ -218,7 +218,7 @@ export default function GenerateDP() {
               required
             />
             {/* if link is for stax campus show Link input*/}
-            {FOR_STAX_ACADEMY ? (
+            {FOR_STAX_CAMPUS ? (
               <TextInput
                 label="Enter link here"
                 variant="filled"
