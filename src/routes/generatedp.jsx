@@ -55,7 +55,12 @@ export default function GenerateDP() {
   const shareUrl = window.location.href;
   const { classes } = useStyles();
   let { bannerid } = useParams();
-  let TEXT_IS_AVAILABLE = true;
+
+  /* The generate dp page customized features
+   for stax are controlled with these flags
+   until support for text selection.*/
+  let FOR_STAX = true;
+  let FOR_STAX_ACADEMY = false;
 
   const form = useForm({
     initialValues: {
@@ -175,9 +180,7 @@ export default function GenerateDP() {
         multiple={false}
         maxSize={MAX_FILE_SIZE}
         accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
-        classNames={{
-          root: classes.dropzoneRoot,
-        }}
+        classNames={{ root: classes.dropzoneRoot }}
         onDrop={(files) => {
           notifications.showNotification({
             color: "teal",
@@ -196,7 +199,7 @@ export default function GenerateDP() {
       >
         {(status, theme) => dropzoneChildren(status, theme, data, file)}
       </Dropzone>
-      {TEXT_IS_AVAILABLE && (
+      {FOR_STAX && (
         <Group>
           <form
             className={classes.form}
@@ -276,7 +279,7 @@ export default function GenerateDP() {
             Download Banner
           </Button>
         )}
-        {!TEXT_IS_AVAILABLE && (
+        {!FOR_STAX && (
           <Button
             color="indigo"
             variant="outline"
