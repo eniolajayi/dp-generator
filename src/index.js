@@ -8,6 +8,7 @@ import Help from "./routes/help";
 import Home from "./routes/home";
 import CreateDP from "./routes/createdp";
 import GenerateDP from "./routes/generatedp";
+import Banner from "./routes/banner";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -16,14 +17,7 @@ ReactDOM.render(
         <Route path="/" element={<App />}>
           <Route index element={<Home />} />
           <Route path="/help" element={<Help />} />
-          <Route
-            path="/banner"
-            element={
-              <>
-                <Outlet />
-              </>
-            }
-          >
+          <Route path="/banner" element={<Banner />}>
             <Route path="/banner/create" element={<CreateDP />} />
             <Route path="/banner/generate/:bannerid" element={<GenerateDP />} />
           </Route>
