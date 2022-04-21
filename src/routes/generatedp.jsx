@@ -219,6 +219,16 @@ export default function GenerateDP() {
               {...form.getInputProps("university")}
               required
             />
+            <TextInput
+              label="Enter link here"
+              variant="filled"
+              size="md"
+              maxLength={300}
+              className={classes.input}
+              value={form.values.link}
+              {...form.getInputProps("link")}
+              required
+            />
             <Group position="left" mt="md">
               <Button
                 disabled={!isReady()}
