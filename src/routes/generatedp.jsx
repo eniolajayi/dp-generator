@@ -123,12 +123,12 @@ export default function GenerateDP() {
     data.append("file_uploaded", file);
     if (FOR_STAX) {
       data.append("Name", values.name);
-      data.append("University", values.university);
-      result = makeBannerStaxCampus(data);
-    } else if (FOR_STAX && FOR_STAX_CAMPUS) {
-      data.append("Name", values.name);
       data.append("Link", values.link);
       result = makeBannerStaxLink(data);
+    } else if (FOR_STAX && FOR_STAX_CAMPUS) {
+      data.append("Name", values.name);
+      data.append("University", values.university);
+      result = makeBannerStaxCampus(data);
     } else {
       data.append("Slug", bannerid);
       result = makeBanner(data, bannerid);
