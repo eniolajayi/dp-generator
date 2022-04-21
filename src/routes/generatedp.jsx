@@ -121,7 +121,7 @@ export default function GenerateDP() {
     let result;
     let data = new FormData();
     data.append("file_uploaded", file);
-    if (FOR_STAX) {
+    if (FOR_STAX && !FOR_STAX_CAMPUS) {
       data.append("Name", values.name);
       data.append("Link", values.link);
       result = makeBannerStaxLink(data);
