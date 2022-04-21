@@ -59,16 +59,20 @@ export default function GenerateDP() {
   /* The generate dp page customized features
    for stax are controlled with these flags
    until support for text selection.*/
-  let FOR_STAX = true;
-  let FOR_STAX_CAMPUS = false;
-
-  const form = useForm({
-    initialValues: {
-      name: "",
-      university: "",
-      link: "",
-    },
-  });
+  let FOR_STAX;
+  let FOR_STAX_CAMPUS;
+  /* Custom banner id detection to seperate 
+  stax banners from other banners */
+  if (bannerid === "stax") {
+    FOR_STAX = true;
+    FOR_STAX_CAMPUS = false;
+  } else if (bannerid === "staxcampus") {
+    FOR_STAX = true;
+    FOR_STAX_CAMPUS = true;
+  } else {
+    FOR_STAX = false;
+    FOR_STAX_CAMPUS = false;
+  }
 
   useEffect(() => {
     getBannerInfo(bannerid)
@@ -83,6 +87,13 @@ export default function GenerateDP() {
       });
   }, [bannerid]);
 
+  const form = useForm({
+    initialValues: {
+      name: "",
+      university: "",
+      link: "",
+    },
+  });
   const onFileDrop = (files) => {
     if (files && files.length > 0) {
       setFile(files[0]);
