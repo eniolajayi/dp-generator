@@ -55,6 +55,7 @@ export default function GenerateDP() {
     initialValues: {
       name: "",
       university: "",
+      link: "",
     },
   });
 
