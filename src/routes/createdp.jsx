@@ -127,7 +127,7 @@ export default function CreateDP() {
             color: "teal",
           });
           form.reset();
-          navigate(`/generatedp/${res.data.Link}`, { replace: true });
+          navigate(`../../banner/generate/${res.data.Link}`, { replace: true });
         }
       })
       .catch((err) => {

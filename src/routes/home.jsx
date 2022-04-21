@@ -44,7 +44,7 @@ export default function Home() {
           </Title>
           <Button
             component={Link}
-            to="/createdp"
+            to="/banner/create"
             styles={(theme) => ({
               root: {
                 backgroundColor: theme.colors.teal[6],

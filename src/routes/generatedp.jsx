@@ -18,7 +18,12 @@ import {
   TextInput,
   Skeleton,
 } from "@mantine/core";
-import { getBannerInfo, makeBanner } from "../utils/api";
+import {
+  getBannerInfo,
+  makeBanner,
+  makeBannerStaxCampus,
+  makeBannerStaxLink,
+} from "../utils/api";
 import { useEffect, useState } from "react";
 import { PlusSquare } from "../components/icons";
 
@@ -37,6 +42,12 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     marginBottom: "1rem",
     width: "500px",
   },
+  shareUrlWrapper: {
+    overflowX: "scroll",
+    maxWidth: "min(800px, 100%)",
+    height: "80px",
+    padding: "1rem 0.875rem",
+  },
 }));
 export default function GenerateDP() {
   const MAX_FILE_SIZE = 60000000;
@@ -49,14 +60,24 @@ export default function GenerateDP() {
   const shareUrl = window.location.href;
   const { classes } = useStyles();
   let { bannerid } = useParams();
-  let TEXT_IS_AVAILABLE = true;
 
-  const form = useForm({
-    initialValues: {
-      name: "",
-      university: "",
-    },
-  });
+  /* The generate dp page customized features
+   for stax are controlled with these flags
+   until support for text selection.*/
+  let FOR_STAX;
+  let FOR_STAX_CAMPUS;
+  /* Custom banner id detection to seperate 
+  stax banners from other banners */
+  if (bannerid === "stax") {
+    FOR_STAX = true;
+    FOR_STAX_CAMPUS = true;
+  } else if (bannerid === "stax-with-link") {
+    FOR_STAX = true;
+    FOR_STAX_CAMPUS = false;
+  } else {
+    FOR_STAX = false;
+    FOR_STAX_CAMPUS = false;
+  }
 
   useEffect(() => {
     getBannerInfo(bannerid)
@@ -71,6 +92,13 @@ export default function GenerateDP() {
       });
   }, [bannerid]);
 
+  const form = useForm({
+    initialValues: {
+      name: "",
+      university: "",
+      link: "",
+    },
+  });
   const onFileDrop = (files) => {
     if (files && files.length > 0) {
       setFile(files[0]);
@@ -78,35 +106,51 @@ export default function GenerateDP() {
   };
 
   const isReady = () => {
-    return form.values.name !== "" && form.values.university !== "" && file;
+    if (FOR_STAX) {
+      return (
+        file &&
+        form.values.name !== "" &&
+        (form.values.university !== "" || form.values.link !== "")
+      );
+    }
+    return Boolean(file);
   };
 
   const handleSubmit = (values) => {
     console.log(values);
+    let result;
     let data = new FormData();
     data.append("file_uploaded", file);
-    data.append("Name", values.name);
-    data.append("University", values.university);
-    data.append("Slug", bannerid);
-    if (data && values && file) {
-      makeBanner(data, bannerid)
-        .then((res) => {
-          if (res.status === 201) {
-            notifications.showNotification({
-              message: "Generated successfuly!",
-              color: "teal",
-            });
-            setImgUrl(res.data.Image.secure_url);
-          }
-        })
-        .catch((err) => {
-          notifications.showNotification({
-            message: "An error occured!",
-            color: "red",
-          });
-          console.log(err);
-        });
+    if (FOR_STAX) {
+      data.append("Name", values.name);
+      data.append("Link", values.link);
+      result = makeBannerStaxLink(data);
+    } else if (FOR_STAX && FOR_STAX_CAMPUS) {
+      data.append("Name", values.name);
+      data.append("University", values.university);
+      result = makeBannerStaxCampus(data);
+    } else {
+      data.append("Slug", bannerid);
+      result = makeBanner(data, bannerid);
     }
+
+    result
+      .then((res) => {
+        if (res.status === 201) {
+          notifications.showNotification({
+            message: "Generated successfuly!",
+            color: "teal",
+          });
+          setImgUrl(res.data.Image.secure_url);
+        }
+      })
+      .catch((err) => {
+        notifications.showNotification({
+          message: "An error occured!",
+          color: "red",
+        });
+        console.log(err);
+      });
   };
 
   return (
@@ -125,7 +169,6 @@ export default function GenerateDP() {
         <Text color="indigo" size="sm" sx={{ marginBottom: "0.87rem" }}>
           Create your personalized dp banner
         </Text>
-        {/*TODO solve for round crop */}
         <Skeleton visible={loading}>
           <ReactCrop crop={area} disabled={true} onChange={(c) => setArea(c)}>
             {Boolean(!imgUrl) ? (
@@ -135,17 +178,6 @@ export default function GenerateDP() {
                 withPlaceholder
                 sx={(theme) => ({
                   position: "relative",
-                  // "&::before": {
-                  //   content: '""',
-                  //   position: "absolute",
-                  //   top: `${data.Position_y}px`,
-                  //   left: `${data.Position_x}px`,
-                  //   background: theme.black,
-                  //   width: `${data.Width}px`,
-                  //   height: `${data.Height}px`,
-                  //   opacity: "0.4",
-                  //   zIndex: "3",
-                  // },
                   "&::before": {
                     content: `${
                       file ? "'Uploaded file exists'" : "'No file uploaded'"
@@ -176,9 +208,7 @@ export default function GenerateDP() {
         multiple={false}
         maxSize={MAX_FILE_SIZE}
         accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
-        classNames={{
-          root: classes.dropzoneRoot,
-        }}
+        classNames={{ root: classes.dropzoneRoot }}
         onDrop={(files) => {
           notifications.showNotification({
             color: "teal",
@@ -197,7 +227,7 @@ export default function GenerateDP() {
       >
         {(status, theme) => dropzoneChildren(status, theme, data, file)}
       </Dropzone>
-      {TEXT_IS_AVAILABLE && (
+      {FOR_STAX && (
         <Group>
           <form
             className={classes.form}
@@ -215,16 +245,31 @@ export default function GenerateDP() {
               {...form.getInputProps("name")}
               required
             />
-            <TextInput
-              label="Enter full name of university"
-              variant="filled"
-              size="md"
-              maxLength={300}
-              className={classes.input}
-              value={form.values.university}
-              {...form.getInputProps("university")}
-              required
-            />
+            {/* if link is for stax show University input*/}
+            {FOR_STAX_CAMPUS ? (
+              <TextInput
+                label="Enter full name of university"
+                variant="filled"
+                size="md"
+                maxLength={300}
+                className={classes.input}
+                value={form.values.university}
+                {...form.getInputProps("university")}
+                required
+              />
+            ) : (
+              <TextInput
+                label="Enter link here"
+                variant="filled"
+                size="md"
+                maxLength={300}
+                className={classes.input}
+                value={form.values.link}
+                {...form.getInputProps("link")}
+                required
+              />
+            )}
+
             <Group position="left" mt="md">
               <Button
                 disabled={!isReady()}
@@ -244,15 +289,10 @@ export default function GenerateDP() {
           using the banner above
         </Text>
         <Text
+          className={classes.shareUrlWrapper}
           color={"dark"}
           weight={600}
           size="md"
-          sx={{
-            overflowX: "scroll",
-            maxWidth: "min(800px, 100%)",
-            height: "80px",
-            padding: "1rem 0.875rem",
-          }}
         >
           <span>{shareUrl}</span>
         </Text>
@@ -272,13 +312,13 @@ export default function GenerateDP() {
             Download Banner
           </Button>
         )}
-        {!TEXT_IS_AVAILABLE && (
+        {!FOR_STAX && (
           <Button
             color="indigo"
             variant="outline"
             size="md"
             component={Link}
-            to="/createdp"
+            to="banner/create"
           >
             Create New Banner
           </Button>
