@@ -217,26 +217,31 @@ export default function GenerateDP() {
               {...form.getInputProps("name")}
               required
             />
-            <TextInput
-              label="Enter full name of university"
-              variant="filled"
-              size="md"
-              maxLength={300}
-              className={classes.input}
-              value={form.values.university}
-              {...form.getInputProps("university")}
-              required
-            />
-            <TextInput
-              label="Enter link here"
-              variant="filled"
-              size="md"
-              maxLength={300}
-              className={classes.input}
-              value={form.values.link}
-              {...form.getInputProps("link")}
-              required
-            />
+            {/* if link is for stax campus show Link input*/}
+            {FOR_STAX_ACADEMY ? (
+              <TextInput
+                label="Enter link here"
+                variant="filled"
+                size="md"
+                maxLength={300}
+                className={classes.input}
+                value={form.values.link}
+                {...form.getInputProps("link")}
+                required
+              />
+            ) : (
+              <TextInput
+                label="Enter full name of university"
+                variant="filled"
+                size="md"
+                maxLength={300}
+                className={classes.input}
+                value={form.values.university}
+                {...form.getInputProps("university")}
+                required
+              />
+            )}
+
             <Group position="left" mt="md">
               <Button
                 disabled={!isReady()}
