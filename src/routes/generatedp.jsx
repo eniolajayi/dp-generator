@@ -225,7 +225,9 @@ export default function GenerateDP() {
           });
         }}
       >
-        {(status, theme) => dropzoneChildren(status, theme, data, file)}
+        {(status, theme) =>
+          dropzoneChildren(status, theme, data, file, FOR_STAX)
+        }
       </Dropzone>
       {FOR_STAX && (
         <Group>
@@ -328,7 +330,7 @@ export default function GenerateDP() {
   );
 }
 
-export const dropzoneChildren = (status, theme, data, file) => {
+export const dropzoneChildren = (status, theme, data, file, FLAG) => {
   return (
     <Group>
       <Button
@@ -342,7 +344,9 @@ export const dropzoneChildren = (status, theme, data, file) => {
       <Text color={Boolean(file) ? "teal" : "blue"}>
         {" "}
         {Boolean(file)
-          ? "Good Job! please fill the remaining inputs below or upload a different image max(6mb), - "
+          ? `Good Job! ${
+              FLAG ? "please fill the remaining inputs below or" : ""
+            } upload a different image max(6mb), - `
           : " max(6mb), your image will replace the avatar area."}{" "}
         {`${data.Width} by ${data.Height} works best`}
       </Text>
