@@ -229,14 +229,15 @@ export default function GenerateDP() {
           dropzoneChildren(status, theme, data, file, FOR_STAX)
         }
       </Dropzone>
-      {FOR_STAX && (
-        <Group>
-          <form
-            className={classes.form}
-            onSubmit={form.onSubmit((values) => {
-              handleSubmit(values);
-            })}
-          >
+
+      <Group>
+        <form
+          className={classes.form}
+          onSubmit={form.onSubmit((values) => {
+            handleSubmit(values);
+          })}
+        >
+          {FOR_STAX && (
             <TextInput
               label="Enter your name"
               variant="filled"
@@ -247,44 +248,40 @@ export default function GenerateDP() {
               {...form.getInputProps("name")}
               required
             />
-            {/* if link is for stax show University input*/}
-            {FOR_STAX_CAMPUS ? (
-              <TextInput
-                label="Enter full name of university"
-                variant="filled"
-                size="md"
-                maxLength={300}
-                className={classes.input}
-                value={form.values.university}
-                {...form.getInputProps("university")}
-                required
-              />
-            ) : (
-              <TextInput
-                label="Enter link here"
-                variant="filled"
-                size="md"
-                maxLength={300}
-                className={classes.input}
-                value={form.values.link}
-                {...form.getInputProps("link")}
-                required
-              />
-            )}
+          )}
+          {FOR_STAX_CAMPUS && (
+            <TextInput
+              label="Enter full name of university"
+              variant="filled"
+              size="md"
+              maxLength={300}
+              className={classes.input}
+              value={form.values.university}
+              {...form.getInputProps("university")}
+              required
+            />
+          )}
+          {FOR_STAX && (
+            <TextInput
+              label="Enter link here"
+              variant="filled"
+              size="md"
+              maxLength={300}
+              className={classes.input}
+              value={form.values.link}
+              {...form.getInputProps("link")}
+              required
+            />
+          )}
 
-            <Group position="left" mt="md">
-              <Button
-                disabled={!isReady()}
-                type="submit"
-                size="md"
-                color="blue"
-              >
-                Generate Banner
-              </Button>
-            </Group>
-          </form>
-        </Group>
-      )}
+          <Group position="left" mt="md">
+            <Button disabled={!isReady()} type="submit" size="md" color="blue">
+              Generate Banner
+            </Button>
+          </Group>
+        </form>
+      </Group>
+
       <Paper sx={{ margin: "2rem 0" }} shadow={"xs"} p="xs">
         <Text color="dark">
           Copy and Share this url to others, so they can create a customized dp
