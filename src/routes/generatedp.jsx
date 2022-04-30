@@ -261,7 +261,7 @@ export default function GenerateDP() {
               required
             />
           )}
-          {FOR_STAX && (
+          {FOR_STAX && !FOR_STAX_CAMPUS && (
             <TextInput
               label="Enter link here"
               variant="filled"
