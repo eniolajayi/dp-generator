@@ -225,16 +225,19 @@ export default function GenerateDP() {
           });
         }}
       >
-        {(status, theme) => dropzoneChildren(status, theme, data, file)}
+        {(status, theme) =>
+          dropzoneChildren(status, theme, data, file, FOR_STAX)
+        }
       </Dropzone>
-      {FOR_STAX && (
-        <Group>
-          <form
-            className={classes.form}
-            onSubmit={form.onSubmit((values) => {
-              handleSubmit(values);
-            })}
-          >
+
+      <Group>
+        <form
+          className={classes.form}
+          onSubmit={form.onSubmit((values) => {
+            handleSubmit(values);
+          })}
+        >
+          {FOR_STAX && (
             <TextInput
               label="Enter your name"
               variant="filled"
@@ -245,44 +248,40 @@ export default function GenerateDP() {
               {...form.getInputProps("name")}
               required
             />
-            {/* if link is for stax show University input*/}
-            {FOR_STAX_CAMPUS ? (
-              <TextInput
-                label="Enter full name of university"
-                variant="filled"
-                size="md"
-                maxLength={300}
-                className={classes.input}
-                value={form.values.university}
-                {...form.getInputProps("university")}
-                required
-              />
-            ) : (
-              <TextInput
-                label="Enter link here"
-                variant="filled"
-                size="md"
-                maxLength={300}
-                className={classes.input}
-                value={form.values.link}
-                {...form.getInputProps("link")}
-                required
-              />
-            )}
+          )}
+          {FOR_STAX_CAMPUS && (
+            <TextInput
+              label="Enter full name of university"
+              variant="filled"
+              size="md"
+              maxLength={300}
+              className={classes.input}
+              value={form.values.university}
+              {...form.getInputProps("university")}
+              required
+            />
+          )}
+          {FOR_STAX && !FOR_STAX_CAMPUS && (
+            <TextInput
+              label="Enter link here"
+              variant="filled"
+              size="md"
+              maxLength={300}
+              className={classes.input}
+              value={form.values.link}
+              {...form.getInputProps("link")}
+              required
+            />
+          )}
 
-            <Group position="left" mt="md">
-              <Button
-                disabled={!isReady()}
-                type="submit"
-                size="md"
-                color="blue"
-              >
-                Generate Banner
-              </Button>
-            </Group>
-          </form>
-        </Group>
-      )}
+          <Group position="left" mt="md">
+            <Button disabled={!isReady()} type="submit" size="md" color="blue">
+              Generate Banner
+            </Button>
+          </Group>
+        </form>
+      </Group>
+
       <Paper sx={{ margin: "2rem 0" }} shadow={"xs"} p="xs">
         <Text color="dark">
           Copy and Share this url to others, so they can create a customized dp
@@ -318,7 +317,7 @@ export default function GenerateDP() {
             variant="outline"
             size="md"
             component={Link}
-            to="banner/create"
+            to="../../banner/create"
           >
             Create New Banner
           </Button>
@@ -328,7 +327,7 @@ export default function GenerateDP() {
   );
 }
 
-export const dropzoneChildren = (status, theme, data, file) => {
+export const dropzoneChildren = (status, theme, data, file, FLAG) => {
   return (
     <Group>
       <Button
@@ -342,7 +341,9 @@ export const dropzoneChildren = (status, theme, data, file) => {
       <Text color={Boolean(file) ? "teal" : "blue"}>
         {" "}
         {Boolean(file)
-          ? "Good Job! please fill the remaining inputs below or upload a different image max(6mb), - "
+          ? `Good Job! ${
+              FLAG ? "please fill the remaining inputs below or" : ""
+            } upload a different image max(6mb), - `
           : " max(6mb), your image will replace the avatar area."}{" "}
         {`${data.Width} by ${data.Height} works best`}
       </Text>
