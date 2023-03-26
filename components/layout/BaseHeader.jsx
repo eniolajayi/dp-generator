@@ -1,5 +1,5 @@
 import { Container, createStyles } from "@mantine/core";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const HEADER_HEIGHT = "50px";
 const useStyles = createStyles((theme, _params, getRef) => ({
@@ -32,11 +32,11 @@ export default function Header() {
     <header className={classes.header}>
       <Container>
         <nav className={classes.nav}>
-          <Link to="/" className={cx(classes.logo, classes.navLink)}>
+          <Link href="/" className={cx(classes.logo, classes.navLink)}>
             DP Generator
           </Link>
 
-          <Link to="/help" className={classes.navLink}>
+          <Link href="/help" className={classes.navLink}>
             How it works?
           </Link>
         </nav>
