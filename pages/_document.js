@@ -15,7 +15,6 @@ export default function Document() {
           href="https://api.fontshare.com/css?f[]=cabinet-grotesk@300,400,500,700,800,900&display=swap"
           rel="stylesheet"
         />
-        <title>Auto DP Generator</title>
       </Head>
 
       <body>
