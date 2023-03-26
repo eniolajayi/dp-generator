@@ -2,6 +2,7 @@ import '../styles/globals.css';
 import Head from 'next/head';
 import { MantineProvider } from "@mantine/core";
 import { Notifications } from '@mantine/notifications';
+import Layout from '../components/layout/Layout';
 
 export default function App(props) {
   const { Component, pageProps } = props;
@@ -25,7 +26,9 @@ export default function App(props) {
         }}
       >
         <Notifications />
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </MantineProvider>
     </>
   );
