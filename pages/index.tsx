@@ -1,4 +1,4 @@
-import { Button, Container, createStyles, Title, Text } from "@mantine/core";
+import { Button, Container, createStyles, Title, Text, Box } from "@mantine/core";
 import Link from 'next/link';
 
 const useStyles = createStyles((theme) => ({
@@ -39,13 +39,7 @@ const customButtonStyles = (theme) => ({
 function HomePage() {
     const { classes, theme } = useStyles();
     return (
-        <section
-            style={{
-                background: theme.colors.gray[0],
-                backgroundImage:
-                    "radial-gradient(at 0% 0%, hsla(139,100%,76%,1) 0, transparent 50%)",
-            }}
-        >
+            <Box sx={{background: theme.colors.gray[0], backgroundImage:"radial-gradient(at 0% 0%, hsla(139,100%,76%,1) 0, transparent 50%)"}}>
             <Container px="xs">
                 <main className={classes.main}>
                     <Title className={classes.heading} order={1} size="h1">
@@ -66,7 +60,7 @@ function HomePage() {
                     </Button>
                 </main>
             </Container>
-        </section>
+            </Box>
     )
 }
 
