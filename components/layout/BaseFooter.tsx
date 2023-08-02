@@ -1,17 +1,18 @@
-import { Container } from "@mantine/core";
+import { Text, Container, Box, useMantineTheme } from "@mantine/core";
 export default function Footer() {
+  const theme = useMantineTheme();
   const getCurrentYear = () => {
     let date = new Date();
     return date.getFullYear();
   };
 
   return (
-    <footer style={{ marginTop: "2rem" }}>
+    <Box component={"footer"} sx={{ marginBlockStart: theme.spacing.sm }}>
       <Container sx={{ textAlign: "center", minHeight: "50px" }}>
-        <span style={{ fontSize: "0.875rem", fontWeight: "500" }}>
-          copyright(c){getCurrentYear()}. all rights reserved
-        </span>
+        <Text component={"span"}>
+          copyright (c){getCurrentYear()}. all rights reserved
+        </Text>
       </Container>
-    </footer>
+    </Box>
   );
 }
