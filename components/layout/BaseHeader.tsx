@@ -1,7 +1,7 @@
 import { Container, createStyles } from "@mantine/core";
 import Link from "next/link";
 
-const HEADER_HEIGHT = "50px";
+const HEADER_HEIGHT = "60px";
 const useStyles = createStyles((theme, _params, getRef) => ({
   header: {
     width: "100%",
