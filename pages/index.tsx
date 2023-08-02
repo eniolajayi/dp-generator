@@ -23,6 +23,19 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
+const customButtonStyles = (theme) => ({
+    root: {
+        backgroundColor: theme.colors.teal[6],
+        fontWeight: 400,
+        fontSize: "0.875rem",
+        minWidth: "186px",
+        maxWidth: "186px",
+        "&:hover": {
+            backgroundColor: theme.colors.teal[6],
+        },
+    },
+})
+
 function HomePage() {
     const { classes, theme } = useStyles();
     return (
@@ -46,18 +59,7 @@ function HomePage() {
                     <Button
                         component={Link}
                         href="/banner/create"
-                        styles={(theme) => ({
-                            root: {
-                                backgroundColor: theme.colors.teal[6],
-                                fontWeight: 400,
-                                fontSize: "0.875rem",
-                                minWidth: "186px",
-                                maxWidth: "186px",
-                                "&:hover": {
-                                    backgroundColor: theme.colors.teal[6],
-                                },
-                            },
-                        })}
+                        styles={customButtonStyles}
                         size="lg"
                     >
                         Get Started
