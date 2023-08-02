@@ -12,7 +12,6 @@ const useStyles = createStyles((theme) => ({
         flexDirection: "column",
     },
     heading: {
-        fontSize: theme.fontSizes.lg,
         fontWeight: 900,
         width: "min(30ch, 100%)",
         textAlign: "center",
@@ -49,7 +48,7 @@ function HomePage() {
         >
             <Container px="xs">
                 <main className={classes.main}>
-                    <Title className={classes.heading} order={1}>
+                    <Title className={classes.heading} order={1} size="h1">
                         Create your own{" "}
                         <Text inherit className={classes.highlight} component={"span"}>
                             {" "}
