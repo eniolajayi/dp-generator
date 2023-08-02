@@ -22,12 +22,16 @@ export default function App(props: AppProps) {
         withGlobalStyles
         withNormalizeCSS
         theme={{
+          fontSizes: {
+            xs: '0.6rem',
+            sm: '0.75rem',
+            md: '0.9rem',
+            lg: '1rem',
+            xl: '1.2rem',
+          },
           fontFamily: "Cabinet Grotesk",
           headings: {
             fontFamily: "Cabinet Grotesk",
-            sizes: {
-              h1: { fontSize: "36" },
-            },
           },
         }}
       >
