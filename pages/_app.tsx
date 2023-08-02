@@ -16,6 +16,7 @@ export default function App(props: AppProps) {
       </Head>
 
       <MantineProvider
+      withGlobalStyles withNormalizeCSS
         theme={{
           fontFamily: "Cabinet Grotesk",
           headings: {
