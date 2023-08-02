@@ -1,7 +1,7 @@
 import { Button, Container, createStyles, Title, Text } from "@mantine/core";
 import Link from 'next/link';
 
-const useStyles = createStyles((theme, _params, getRef) => ({
+const useStyles = createStyles((theme) => ({
     main: {
         width: "100%",
         height: "80vh",
@@ -12,7 +12,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         flexDirection: "column",
     },
     heading: {
-        fontWeight: "900",
+        fontWeight: 900,
         width: "min(30ch, 100%)",
         textAlign: "center",
         textTransform: "uppercase",
@@ -24,11 +24,11 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 }));
 
 function HomePage() {
-    const { classes } = useStyles();
+    const { classes, theme } = useStyles();
     return (
         <section
             style={{
-                background: "#ffffff",
+                background: theme.colors.gray[0],
                 backgroundImage:
                     "radial-gradient(at 0% 0%, hsla(139,100%,76%,1) 0, transparent 50%)",
             }}
@@ -49,7 +49,7 @@ function HomePage() {
                         styles={(theme) => ({
                             root: {
                                 backgroundColor: theme.colors.teal[6],
-                                fontWeight: "400",
+                                fontWeight: 400,
                                 fontSize: "0.875rem",
                                 minWidth: "186px",
                                 maxWidth: "186px",

@@ -3,14 +3,15 @@ import Head from 'next/head';
 import { MantineProvider } from "@mantine/core";
 import { Notifications } from '@mantine/notifications';
 import Layout from '../components/layout/Layout';
+import { AppProps } from 'next/app';
 
-export default function App(props) {
+export default function App(props: AppProps) {
   const { Component, pageProps } = props;
 
   return (
     <>
       <Head>
-        <title>Auto DP Generator</title>
+        <title>DP Generator</title>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>
 
@@ -20,7 +21,7 @@ export default function App(props) {
           headings: {
             fontFamily: "Cabinet Grotesk",
             sizes: {
-              h1: { fontSize: 36 },
+              h1: { fontSize: '36' },
             },
           },
         }}
