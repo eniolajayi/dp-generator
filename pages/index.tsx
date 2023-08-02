@@ -12,6 +12,7 @@ const useStyles = createStyles((theme) => ({
         flexDirection: "column",
     },
     heading: {
+        fontSize: theme.fontSizes.lg,
         fontWeight: 900,
         width: "min(30ch, 100%)",
         textAlign: "center",
