@@ -16,7 +16,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     justifyContent: "space-between",
   },
   logo: {
-    fontWeight: "600",
+    fontWeight: 600,
   },
   navLink: {
     color: "#fff",
